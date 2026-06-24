@@ -75,13 +75,13 @@
 
         .content-card {
             background: var(--card-bg-tint);
-            border: var(--border-width) solid var(--border-strong);
+            border: clamp(2px, 0.6vw, 3px) solid rgba(176, 215, 251, 0.35);
             border-radius: clamp(12px, 3vw, 20px);
             padding: clamp(12px, 1.5vw, 18px);
             max-width: min(95vw, 760px);
             width: 100%;
             text-align: center;
-            box-shadow: 0 10px 30px var(--card-shadow);
+            box-shadow: 0 8px 24px rgba(93, 140, 210, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
             position: relative;
             max-height: calc(100vh - 24px);
             overflow-y: auto;
