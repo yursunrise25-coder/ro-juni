@@ -2131,7 +2131,7 @@
             flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
-            gap: clamp(10px, 1vw, 14px);
+            gap: clamp(8px, 0.8vw, 12px);
             margin: clamp(10px, 1.2vw, 18px) auto clamp(14px, 1.2vw, 20px);
             width: 100%;
             max-width: 1500px;
@@ -2148,7 +2148,7 @@
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(12px);
             border: 2px solid var(--border-strong);
-            padding: clamp(14px, 2.5vw, 18px);
+            padding: clamp(10px, 2.2vw, 14px);
             border-radius: 20px;
             text-align: center;
             cursor: pointer;
@@ -2158,9 +2158,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: clamp(10px, 1.5vw, 14px);
+            gap: clamp(8px, 1.2vw, 10px);
             overflow: hidden;
-            min-height: clamp(300px, 32vw, 360px);
+            min-height: clamp(320px, 34vw, 380px);
             scroll-snap-align: center;
         }
 
@@ -2172,18 +2172,20 @@
         }
 
         .char-svg {
-            width: clamp(165px, 27vw, 210px);
-            height: clamp(210px, 33vw, 255px);
-            margin: 0 auto 8px;
+            width: clamp(200px, 32vw, 260px);
+            height: clamp(260px, 40vw, 320px);
+            margin: 0 auto 4px;
             display: block;
             flex-shrink: 0;
+            object-fit: contain;
         }
 
         .char-card svg {
-            width: clamp(165px, 27vw, 210px) !important;
-            height: clamp(210px, 33vw, 255px) !important;
-            margin: 0 auto clamp(8px, 1.5vw, 10px) !important;
+            width: clamp(200px, 32vw, 260px) !important;
+            height: clamp(260px, 40vw, 320px) !important;
+            margin: 0 auto clamp(4px, 1vw, 6px) !important;
             display: block !important;
+            object-fit: contain !important;
         }
 
         .char-name {
@@ -2841,7 +2843,7 @@
                 flex-wrap: nowrap;
                 justify-content: center;
                 align-items: center;
-                gap: clamp(10px, 3.5vw, 14px);
+                gap: clamp(8px, 3vw, 12px);
                 margin-bottom: clamp(14px, 4vw, 22px);
                 width: 100%;
                 padding: 0 clamp(10px, 2vw, 14px);
@@ -2853,8 +2855,8 @@
                 flex: 0 1 clamp(180px, 20vw, 240px);
                 width: clamp(180px, 20vw, 240px);
                 max-width: 240px;
-                padding: clamp(12px, 2.8vw, 16px);
-                min-height: clamp(220px, 28vw, 280px);
+                padding: clamp(10px, 2.5vw, 12px);
+                min-height: clamp(240px, 30vw, 290px);
                 background: rgba(255, 255, 255, 0.92);
                 backdrop-filter: blur(10px);
                 border: 2px solid var(--border-strong);
@@ -2879,8 +2881,8 @@
 
             .char-svg,
             .char-card svg {
-                width: clamp(82px, 25vw, 108px) !important;
-                height: clamp(105px, 32vw, 127px) !important;
+                width: clamp(130px, 31vw, 170px) !important;
+                height: clamp(165px, 40vw, 210px) !important;
             }
 
             .quiz-header {
@@ -3053,7 +3055,7 @@
                 flex-wrap: nowrap;
                 justify-content: center;
                 align-items: center;
-                gap: clamp(8px, 2.5vw, 12px);
+                gap: clamp(6px, 2vw, 10px);
                 margin-bottom: clamp(10px, 3vw, 20px);
                 width: 100%;
                 padding: 0 clamp(8px, 2vw, 12px);
@@ -3065,12 +3067,12 @@
                 flex: 0 1 clamp(140px, 28vw, 200px);
                 width: clamp(140px, 28vw, 200px);
                 max-width: 200px;
-                padding: clamp(10px, 2.3vw, 12px);
+                padding: clamp(8px, 2vw, 10px);
                 background: rgba(255, 255, 255, 0.92);
                 backdrop-filter: blur(10px);
                 border: 2px solid var(--border-strong);
                 box-shadow: 0 10px 28px rgba(93,140,210,0.16);
-                min-height: clamp(180px, 26vw, 240px);
+                min-height: clamp(200px, 28vw, 260px);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -3099,8 +3101,8 @@
             }
 
             .char-svg {
-                width: clamp(75px, 17vw, 105px);
-                height: clamp(93px, 20vw, 127px);
+                width: clamp(120px, 20vw, 160px);
+                height: clamp(155px, 26vw, 200px);
             }
 
             h1 {
