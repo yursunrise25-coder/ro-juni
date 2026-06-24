@@ -30,6 +30,7 @@
             --border-blue: #3F7DD8; /* medium blue for subtle borders */
             --border-strong: #1E3A5F; /* strong navy for consistent borders */
             --border-width: clamp(3px, 0.8vw, 4px);
+            --main-panel-border: rgba(176, 215, 251, 0.45); /* soft sky-blue border for large panels */
             --card-bg-tint: #F7FBFF; /* slight blue-white tint for cards */
             --card-shadow: rgba(93,140,210,0.12);
             --dark-text: #102A43;   /* navy for readable text */
@@ -75,7 +76,7 @@
 
         .content-card {
             background: var(--card-bg-tint);
-            border: clamp(2px, 0.6vw, 3px) solid rgba(176, 215, 251, 0.35);
+            border: clamp(2px, 0.6vw, 3px) solid var(--main-panel-border);
             border-radius: clamp(12px, 3vw, 20px);
             padding: clamp(12px, 1.5vw, 18px);
             max-width: min(95vw, 760px);
@@ -114,7 +115,7 @@
                 justify-content: flex-start;
                 align-items: stretch;
                 background: linear-gradient(180deg, var(--soft-cloud-blue) 0%, var(--soft-white) 55%);
-                border-left: 4px solid var(--border-blue);
+                border-left: 4px solid var(--main-panel-border);
                 border-bottom: none;
                 padding: 14px 14px;
                 gap: 12px;
@@ -154,7 +155,7 @@
                 justify-content: flex-start;
                 align-items: stretch;
                 background: linear-gradient(180deg, var(--soft-cloud-blue) 0%, var(--soft-white) 55%);
-                border-left: 4px solid var(--border-blue);
+                border-left: 4px solid var(--main-panel-border);
                 padding: 16px 14px;
                 gap: 12px;
                 overflow-y: visible;
@@ -376,7 +377,7 @@
                 height: auto !important;
                 position: relative !important;
                 border-right: none !important;
-                border-bottom: 4px solid var(--border-strong);
+                border-bottom: 4px solid var(--main-panel-border);
                 padding: 16px;
                 gap: 12px;
                 background: linear-gradient(180deg, var(--soft-cloud-blue), var(--soft-white)) !important;
@@ -397,7 +398,7 @@
                 padding: 16px;
                 background: linear-gradient(180deg, var(--soft-cloud-blue), var(--soft-white));
                 border-left: none;
-                border-top: 4px solid var(--border-strong);
+                border-top: 4px solid var(--main-panel-border);
                 order: 3;
             }
 
@@ -476,7 +477,7 @@
 
         .content-card {
             background: var(--soft-white);
-            border: clamp(5px, 1.5vw, 8px) solid var(--border-blue);
+            border: clamp(5px, 1.5vw, 8px) solid var(--main-panel-border);
             border-radius: clamp(12px, 3vw, 20px);
             padding: clamp(16px, 2vw, 20px);
             max-width: min(95vw, 760px);
@@ -2758,7 +2759,7 @@
                 width: min(92vw, 420px);
                 max-width: 420px;
                 padding: clamp(15px, 4vw, 24px);
-                border: clamp(5px, 1.5vw, 8px) solid var(--border-blue);
+                border: clamp(5px, 1.5vw, 8px) solid var(--main-panel-border);
                 margin: 0 auto;
             }
 
@@ -2934,7 +2935,7 @@
                 width: min(92vw, 360px);
                 max-width: 360px;
                 padding: clamp(12px, 3vw, 18px);
-                border: clamp(4px, 1vw, 6px) solid var(--border-blue);
+                border: clamp(4px, 1vw, 6px) solid var(--main-panel-border);
                 max-height: 90vh;
                 margin: 0 auto;
             }
