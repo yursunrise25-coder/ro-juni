@@ -2131,18 +2131,20 @@
             flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
-            gap: clamp(10px, 1vw, 14px);
-            margin: clamp(8px, 1vw, 14px) auto clamp(12px, 1vw, 18px);
+            gap: clamp(12px, 1vw, 18px);
+            margin: clamp(10px, 1.2vw, 18px) auto clamp(14px, 1.2vw, 20px);
             width: 100%;
-            max-width: 1200px;
-            padding: 0 clamp(6px, 1vw, 14px);
-            overflow-x: hidden;
+            max-width: 1500px;
+            padding: 0 clamp(10px, 1.5vw, 20px);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
         }
 
         .char-card {
-            flex: 0 1 clamp(180px, 16vw, 280px);
-            width: clamp(180px, 16vw, 280px);
-            max-width: 280px;
+            flex: 0 1 clamp(220px, 16vw, 300px);
+            width: clamp(220px, 16vw, 300px);
+            max-width: 300px;
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(12px);
             border: 2px solid var(--border-strong);
@@ -2158,7 +2160,8 @@
             justify-content: center;
             gap: clamp(18px, 2vw, 24px);
             overflow: hidden;
-            min-height: clamp(320px, 34vw, 400px);
+            min-height: clamp(340px, 34vw, 420px);
+            scroll-snap-align: center;
         }
 
         .char-card:hover {
@@ -2838,24 +2841,26 @@
                 flex-wrap: nowrap;
                 justify-content: center;
                 align-items: center;
-                gap: clamp(10px, 4vw, 16px);
+                gap: clamp(12px, 4vw, 18px);
                 margin-bottom: clamp(14px, 4vw, 22px);
                 width: 100%;
                 padding: 0 clamp(10px, 2vw, 14px);
-                overflow-x: hidden;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
             }
 
             .char-card {
-                flex: 0 1 clamp(150px, 22vw, 220px);
-                width: clamp(150px, 22vw, 220px);
-                max-width: 220px;
-                padding: clamp(14px, 3vw, 18px);
-                min-height: clamp(190px, 28vw, 240px);
+                flex: 0 1 clamp(200px, 20vw, 260px);
+                width: clamp(200px, 20vw, 260px);
+                max-width: 260px;
+                padding: clamp(18px, 3.2vw, 22px);
+                min-height: clamp(240px, 30vw, 300px);
                 background: rgba(255, 255, 255, 0.92);
                 backdrop-filter: blur(10px);
                 border: 2px solid var(--border-strong);
                 box-shadow: 0 10px 28px rgba(93,140,210,0.16);
                 overflow: hidden;
+                scroll-snap-align: center;
             }
 
             .char-card:hover {
@@ -3050,21 +3055,28 @@
                 align-items: center;
                 gap: clamp(10px, 3vw, 15px);
                 margin-bottom: clamp(10px, 3vw, 20px);
+                width: 100%;
                 padding: 0 clamp(8px, 2vw, 12px);
-                overflow-x: hidden;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
             }
 
             .char-card {
-                flex: 0 1 clamp(120px, 30vw, 180px);
-                width: clamp(120px, 30vw, 180px);
-                padding: clamp(10px, 2.5vw, 14px);
-                background: rgba(255, 255, 255, 0.88);
+                flex: 0 1 clamp(160px, 30vw, 220px);
+                width: clamp(160px, 30vw, 220px);
+                max-width: 220px;
+                padding: clamp(12px, 2.5vw, 16px);
+                background: rgba(255, 255, 255, 0.92);
                 backdrop-filter: blur(10px);
                 border: 2px solid var(--border-strong);
                 box-shadow: 0 10px 28px rgba(93,140,210,0.16);
-                min-height: clamp(160px, 26vw, 200px);
+                min-height: clamp(200px, 28vw, 260px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 justify-content: center;
                 overflow: hidden;
+                scroll-snap-align: center;
             }
 
             .char-card:hover {
@@ -3075,61 +3087,20 @@
             }
 
             .char-name {
-                font-size: clamp(10px, 2.1vw, 11px);
+                font-size: clamp(10px, 2vw, 11px);
                 color: var(--dark-text);
                 line-height: 1.2;
                 margin-top: clamp(6px, 1.5vw, 8px);
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                width: 100%;
+                max-width: 180px;
             }
 
             .char-svg {
                 width: clamp(50px, 11vw, 70px);
                 height: clamp(62px, 13vw, 85px);
-            }
-
-            /* Ensure avatar selection wrapper is centered and constrained */
-                padding: 0 clamp(8px, 2vw, 12px);
-            }
-
-            .char-card {
-                width: 100%;
-                max-width: 180px;
-                padding: clamp(10px, 2.5vw, 14px);
-                min-height: clamp(150px, 22vw, 190px);
-                background: rgba(255, 255, 255, 0.88);
-                backdrop-filter: blur(10px);
-                border: 2px solid var(--border-strong);
-                box-shadow: 0 8px 20px rgba(93,140,210,0.14);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .char-card:hover {
-                border-color: var(--accent-blue);
-                background: rgba(255, 255, 255, 0.92);
-                box-shadow: 0 10px 26px rgba(93,140,210,0.18);
-                transform: translateY(-2px);
-            }
-
-            .char-name {
-                font-size: clamp(10px, 2vw, 11px);
-                color: var(--dark-text
-                width: 100%;
-                max-width: 180px;
-                padding: clamp(10px, 2.5vw, 14px);
-                min-height: clamp(150px, 22vw, 190px);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .char-name {
-                font-size: clamp(10px, 2vw, 11px);
             }
 
             h1 {
@@ -3247,7 +3218,15 @@
             }
 
             .char-grid {
-                grid-template-columns: repeat(2, 1fr);
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
+                gap: clamp(8px, 2vw, 12px);
+                width: 100%;
+                padding: 0 clamp(8px, 2vw, 10px);
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
             }
 
             .control-group {
@@ -3321,7 +3300,7 @@
 
     <!-- SCREEN 3: Pilih Karakter -->
     <div id="screen-char" class="screen-overlay hidden">
-        <div style="text-align: center; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 clamp(12px, 2vw, 24px);">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 100%; max-width: 1500px; margin: 0 auto; padding: 0 clamp(14px, 2vw, 28px);">
             <h1 class="screen-char-title">PILIH AVATARMU</h1>
             <div class="char-grid" id="selection-grid"></div>
         </div>
