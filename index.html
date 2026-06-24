@@ -1800,17 +1800,21 @@
 
         .adventure-info-card .info-label {
             text-align: center;
-            font-size: clamp(10px, 1vw, 12px);
-            letter-spacing: 0.08em;
-            line-height: 1.2;
+            font-size: clamp(11px, 1.2vw, 14px);
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            line-height: 1.3;
             width: 100%;
+            color: var(--dark-outline);
+            text-transform: uppercase;
         }
 
         .info-main {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: clamp(8px, 0.9vw, 12px);
+            gap: clamp(10px, 1.2vw, 14px);
             width: 100%;
             text-align: center;
             min-width: 0;
@@ -1828,14 +1832,14 @@
         }
 
         .info-value {
-            font-size: clamp(12px, 1.15vw, 15px);
-            font-weight: 900;
+            font-size: clamp(13px, 1.3vw, 16px);
+            font-weight: 700;
             color: var(--dark-outline);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         /* Mobile-only: stack info cards on top and game panel below */
