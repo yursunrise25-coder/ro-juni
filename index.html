@@ -2127,20 +2127,22 @@
 
         /* Character Grid */
         .char-grid {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(clamp(240px, 16vw, 360px), 1fr));
-            justify-content: space-evenly;
-            justify-items: center;
-            gap: clamp(8px, 0.8vw, 14px);
-            margin: clamp(8px, 1vw, 14px) 0 clamp(12px, 1vw, 18px);
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 1vw, 14px);
+            margin: clamp(8px, 1vw, 14px) auto clamp(12px, 1vw, 18px);
             width: 100%;
-            max-width: 100%;
+            max-width: 1200px;
             padding: 0 clamp(6px, 1vw, 14px);
+            overflow-x: hidden;
         }
 
         .char-card {
-            width: 100%;
-            max-width: 360px;
+            flex: 0 1 clamp(180px, 16vw, 280px);
+            width: clamp(180px, 16vw, 280px);
+            max-width: 280px;
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(12px);
             border: 2px solid var(--border-strong);
@@ -2832,17 +2834,21 @@
             }
 
             .char-grid {
-                grid-template-columns: repeat(2, minmax(140px, 1fr));
-                justify-items: center;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
                 gap: clamp(10px, 4vw, 16px);
                 margin-bottom: clamp(14px, 4vw, 22px);
                 width: 100%;
                 padding: 0 clamp(10px, 2vw, 14px);
+                overflow-x: hidden;
             }
 
             .char-card {
-                width: 100%;
-                max-width: 180px;
+                flex: 0 1 clamp(150px, 22vw, 220px);
+                width: clamp(150px, 22vw, 220px);
+                max-width: 220px;
                 padding: clamp(14px, 3vw, 18px);
                 min-height: clamp(190px, 28vw, 240px);
                 background: rgba(255, 255, 255, 0.92);
@@ -3038,15 +3044,19 @@
             }
 
             .char-grid {
-                grid-template-columns: repeat(1, minmax(140px, 1fr));
-                justify-items: center;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
                 gap: clamp(10px, 3vw, 15px);
                 margin-bottom: clamp(10px, 3vw, 20px);
                 padding: 0 clamp(8px, 2vw, 12px);
+                overflow-x: hidden;
             }
 
             .char-card {
-                width: min(90vw, 180px);
+                flex: 0 1 clamp(120px, 30vw, 180px);
+                width: clamp(120px, 30vw, 180px);
                 padding: clamp(10px, 2.5vw, 14px);
                 background: rgba(255, 255, 255, 0.88);
                 backdrop-filter: blur(10px);
@@ -3311,7 +3321,7 @@
 
     <!-- SCREEN 3: Pilih Karakter -->
     <div id="screen-char" class="screen-overlay hidden">
-        <div style="text-align: center; width: 100%; max-width: none; padding: 0 clamp(12px, 2vw, 24px);">
+        <div style="text-align: center; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 clamp(12px, 2vw, 24px);">
             <h1 class="screen-char-title">PILIH AVATARMU</h1>
             <div class="char-grid" id="selection-grid"></div>
         </div>
