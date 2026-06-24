@@ -2128,13 +2128,14 @@
         /* Character Grid */
         .char-grid {
             display: grid;
-            grid-template-columns: repeat(5, minmax(clamp(250px, 18vw, 360px), 1fr));
-            justify-content: center;
+            grid-template-columns: repeat(5, minmax(clamp(240px, 16vw, 360px), 1fr));
+            justify-content: space-evenly;
             justify-items: center;
-            gap: clamp(10px, 1vw, 16px);
-            margin: clamp(12px, 1.5vw, 18px) auto clamp(16px, 1.5vw, 22px);
-            width: min(100%, 1400px);
-            padding: 0 clamp(10px, 1.5vw, 16px);
+            gap: clamp(8px, 0.8vw, 14px);
+            margin: clamp(8px, 1vw, 14px) 0 clamp(12px, 1vw, 18px);
+            width: 100%;
+            max-width: 100%;
+            padding: 0 clamp(6px, 1vw, 14px);
         }
 
         .char-card {
@@ -3310,7 +3311,7 @@
 
     <!-- SCREEN 3: Pilih Karakter -->
     <div id="screen-char" class="screen-overlay hidden">
-        <div style="text-align: center; width: 100%; max-width: min(100%, 1400px);">
+        <div style="text-align: center; width: 100%; max-width: none; padding: 0 clamp(12px, 2vw, 24px);">
             <h1 class="screen-char-title">PILIH AVATARMU</h1>
             <div class="char-grid" id="selection-grid"></div>
         </div>
