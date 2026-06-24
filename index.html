@@ -1,0 +1,4796 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Resonance Odyssey - Journey of Nusantara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100vh;
+        }
+
+        :root {
+            --sky-blue: #E6F4FF;
+            --soft-cloud-blue: #EEF8FF;
+            --light-blue: #E0F2FF;
+            --pastel-blue: #D7EFFE;
+            --accent-blue: #BFDFF9; /* softer accent for highlights */
+            --mid-blue: #B0D7FB;    /* gentle mid tone */
+            --deep-blue: #102A43;   /* darker navy for headings */
+            --border-blue: #3F7DD8; /* medium blue for subtle borders */
+            --border-strong: #1E3A5F; /* strong navy for consistent borders */
+            --border-width: clamp(3px, 0.8vw, 4px);
+            --card-bg-tint: #F7FBFF; /* slight blue-white tint for cards */
+            --card-shadow: rgba(93,140,210,0.12);
+            --dark-text: #102A43;   /* navy for readable text */
+            --dark-outline: var(--dark-text);
+            --soft-white: #FFFFFF;
+            --soft-grey: #F2F8FF;
+
+            /* legacy aliases mapped to soft blues */
+            --wood: var(--border-blue);
+            --paper: var(--soft-white);
+            --gold: var(--accent-blue);
+            --cream: var(--soft-white);
+            --soft-yellow: var(--accent-blue);
+            --fresh-green: var(--pastel-blue);
+            --deep-leaf-green: var(--border-blue);
+            --light-grass-green: var(--soft-grey);
+            --warm-wood: var(--mid-blue);
+        }
+
+        body {
+            background-color: var(--soft-cloud-blue);
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark-outline);
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+            height: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Remove any leftover stamina visuals */
+        .stamina-info,
+        .stamina-label,
+        #life-icons,
+        .status-card.stamina-info {
+            display: none !important;
+        }
+
+        .content-card {
+            background: var(--card-bg-tint);
+            border: var(--border-width) solid var(--border-strong);
+            border-radius: clamp(12px, 3vw, 20px);
+            padding: clamp(16px, 2vw, 20px);
+            max-width: min(95vw, 760px);
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px var(--card-shadow);
+            position: relative;
+            max-height: calc(100vh - 24px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: clamp(10px, 1.5vw, 14px);
+        }
+
+        /* Desktop Split Layout (1024px+) */
+        @media (min-width: 1024px) {
+            body {
+                display: grid;
+                grid-template-columns: minmax(760px, 2.3fr) minmax(340px, 0.95fr);
+                grid-template-rows: auto 1fr;
+                height: 100vh;
+                overflow: hidden;
+                gap: 0;
+            }
+
+            #top-status {
+                grid-column: 2;
+                grid-row: 1;
+                width: 100%;
+                height: auto;
+                max-height: none;
+                display: flex !important;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                background: linear-gradient(180deg, var(--soft-cloud-blue) 0%, var(--soft-white) 55%);
+                border-left: 4px solid var(--border-blue);
+                border-bottom: none;
+                padding: 14px 14px;
+                gap: 12px;
+                overflow-y: visible;
+                overscroll-behavior: contain;
+                position: relative;
+                top: auto;
+                z-index: 30;
+                box-shadow: inset -6px 0 10px rgba(0,0,0,0.06);
+            }
+
+            .game-main {
+                grid-column: 1;
+                grid-row: 1 / span 2;
+                width: 100%;
+                height: 100%;
+                min-height: 0;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 16px;
+                padding: 18px 24px 18px 28px;
+                background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-cloud-blue) 52%, var(--soft-white) 100%);
+                overflow: visible;
+                position: relative;
+            }
+
+            .game-panel {
+                grid-column: 2;
+                grid-row: 2;
+                width: 100%;
+                height: 100%;
+                min-height: 0;
+                display: flex !important;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                background: linear-gradient(180deg, var(--soft-cloud-blue) 0%, var(--soft-white) 55%);
+                border-left: 4px solid var(--border-blue);
+                padding: 16px 14px;
+                gap: 12px;
+                overflow-y: visible;
+                overscroll-behavior: contain;
+                position: relative;
+                z-index: 30;
+                box-shadow: inset 8px 0 10px rgba(0,0,0,0.08);
+            }
+
+            .game-main .monopoly-board {
+                width: min(860px, 100%);
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .game-main .control-group {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin: 0;
+                gap: 0;
+                z-index: 1;
+                align-self: center;
+            }
+
+            .game-board-wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                min-height: 0;
+                gap: 12px;
+                max-width: 100%;
+            }
+
+            /* Reorganize status bar into vertical card layout */
+            .status-bar {
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                gap: 0;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .status-left {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 12px;
+                width: 100%;
+            }
+
+            .status-metric-row {
+                display: grid;
+                gap: 14px;
+                width: 100%;
+            }
+
+            .status-card.stamina-info {
+                display: none !important;
+            }
+
+            .avatar-badge {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 12px;
+                gap: 8px;
+                background: rgba(247, 251, 255, 0.92);
+                border-radius: 16px;
+                border: 1px solid rgba(32, 70, 141, 0.12);
+                box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+                width: 100%;
+            }
+
+            #status-avatar {
+                width: 72px;
+                height: 72px;
+            }
+
+            .player-info {
+                text-align: center;
+                color: var(--dark-outline);
+                width: 100%;
+            }
+
+            .player-name {
+                font-weight: 900;
+                font-size: 12px;
+                color: var(--dark-outline);
+                margin: 0 0 4px 0;
+                line-height: 1.25;
+                word-wrap: break-word;
+                word-break: break-word;
+            }
+
+            .player-title {
+                font-size: 10px;
+                color: var(--dark-outline);
+                margin: 2px 0 0 0;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+
+            .location-info,
+            .stamina-info {
+                display: grid;
+                gap: 6px;
+                padding: 10px;
+                background: rgba(247, 251, 255, 0.92);
+                border-radius: 14px;
+                border: 1px solid rgba(32, 70, 141, 0.12);
+                box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+                margin: 0;
+                text-align: center;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .location-label,
+            .stamina-label {
+                font-size: 10px;
+                color: var(--dark-outline);
+                text-transform: uppercase;
+                letter-spacing: 0.10em;
+                margin: 0;
+                font-weight: 700;
+            }
+
+            #current-loc {
+                font-weight: 800;
+                font-size: 12px;
+                color: var(--dark-outline);
+                margin: 0;
+                line-height: 1.2;
+                word-break: keep-all;
+            }
+
+            #life-icons {
+                font-size: 16px;
+                letter-spacing: 2px;
+                display: flex;
+                justify-content: center;
+                gap: 2px;
+            }
+
+            .stamina-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* Status Summary Cards Grid - 2x2 */
+            .status-summary {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                width: 100%;
+            }
+
+            .panel-summary-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+                width: 100%;
+                margin-top: 12px;
+            }
+
+            .status-summary-item {
+                display: grid;
+                gap: 4px;
+                padding: 10px;
+                background: rgba(247, 251, 255, 0.92);
+                border-radius: 12px;
+                border: 1px solid rgba(32, 70, 141, 0.12);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+                text-align: center;
+                width: 100%;
+            }
+
+            .status-summary-label {
+                font-size: 8px;
+                color: var(--dark-outline);
+                text-transform: uppercase;
+                letter-spacing: 0.10em;
+                margin: 0;
+                font-weight: 700;
+            }
+
+            .status-summary-item strong {
+                font-size: 11px;
+                color: var(--dark-outline);
+                margin: 0;
+                line-height: 1.1;
+            }
+        }
+
+        /* Mobile adjustment (under 1024px) */
+        @media (max-width: 1023px) {
+            body {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            #top-status {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                position: relative !important;
+                border-right: none !important;
+                border-bottom: 4px solid var(--border-strong);
+                padding: 16px;
+                gap: 12px;
+                background: linear-gradient(180deg, var(--soft-cloud-blue), var(--soft-white)) !important;
+                overflow-y: auto !important;
+            }
+
+            .game-main {
+                width: 100%;
+                height: auto;
+                min-height: auto;
+                padding: 16px;
+                order: 2;
+            }
+
+            .game-panel {
+                width: 100%;
+                height: auto;
+                padding: 16px;
+                background: linear-gradient(180deg, var(--soft-cloud-blue), var(--soft-white));
+                border-left: none;
+                border-top: 4px solid var(--border-strong);
+                order: 3;
+            }
+
+            .game-board-wrapper,
+            .game-main,
+            .game-panel,
+            .screen-overlay,
+            .content-card {
+                min-width: 0;
+            }
+
+            .screen-overlay {
+                align-items: center;
+                justify-content: center;
+            }
+
+            .status-left {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .avatar-badge {
+                flex-direction: row;
+                gap: 12px;
+                padding: 12px 16px;
+                width: auto;
+            }
+
+            #status-avatar {
+                width: 60px;
+                height: 60px;
+            }
+
+            .stamina-info {
+                text-align: right;
+                flex-direction: column;
+            }
+
+            .status-summary {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                width: 100%;
+            }
+
+            .status-summary-item {
+                padding: 8px;
+                gap: 4px;
+            }
+        }
+
+        /* Screen Overlay */
+        .screen-overlay {
+            position: fixed;
+            inset: 0;
+            background: url('https://raw.githubusercontent.com/wangja363-design/ro-juni/e388199f58453ecd66b9ba7e0ab934f9dcf9e990/mini%20game%20(2).png') center/cover no-repeat;
+            background-color: var(--soft-cloud-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: clamp(10px, 2vw, 14px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .screen-overlay.hidden {
+            display: none !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .content-card {
+            background: var(--soft-white);
+            border: clamp(5px, 1.5vw, 8px) solid var(--border-blue);
+            border-radius: clamp(12px, 3vw, 20px);
+            padding: clamp(16px, 2vw, 20px);
+            max-width: min(95vw, 760px);
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 clamp(24px, 6vw, 40px) rgba(93,140,210,0.10);
+            position: relative;
+            max-height: calc(100vh - 24px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: clamp(10px, 1.5vw, 14px);
+            min-height: 0;
+        }
+
+        .screen-overlay .content-card {
+            max-height: calc(100vh - 40px);
+        }
+
+        .screen-overlay .btn-gold {
+            padding: clamp(10px, 1.5vw, 14px) clamp(18px, 3vw, 22px);
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            font-size: clamp(14px, 2vw, 16px);
+            border-radius: clamp(10px, 2vw, 12px);
+            box-shadow: 0 4px 0 rgba(58,51,40,0.35);
+        }
+
+        .screen-overlay h2 {
+            font-size: clamp(20px, 3vw, 26px);
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .screen-overlay p {
+            margin: 0;
+            font-size: clamp(13px, 2vw, 15px);
+            line-height: 1.4;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--mid-blue) 0%, var(--accent-blue) 100%);
+            color: var(--dark-outline);
+            padding: clamp(12px, 2.5vw, 15px) clamp(20px, 5vw, 40px);
+            border-radius: clamp(8px, 2vw, 12px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: clamp(1px, 0.5vw, 2px);
+            border: clamp(1px, 0.3vw, 3px) solid var(--border-blue);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 clamp(3px, 1vw, 5px) 0 rgba(93,140,210,0.08);
+            font-size: clamp(13px, 2.5vw, 16px);
+            width: 100%;
+            margin-top: clamp(8px, 2vw, 10px);
+        }
+
+        .btn-gold:hover { 
+            transform: translateY(-1px); 
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-white) 100%);
+        }
+
+        .btn-gold:active { 
+            transform: translateY(2px); 
+            box-shadow: 0 1px 0 rgba(32, 70, 141, 0.18); 
+        }
+
+        #input-player-name {
+            width: 100%;
+            padding: clamp(12px, 2.5vw, 18px) clamp(15px, 3vw, 25px);
+            border: clamp(2px, 0.5vw, 4px) solid var(--border-blue);
+            border-radius: 8px;
+            font-size: clamp(14px, 2vw, 20px);
+            font-weight: bold;
+            text-align: center;
+            margin: clamp(5px, 1vw, 10px) 0;
+            font-family: 'Poppins', sans-serif;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.4);
+            color: var(--dark-outline);
+        }
+
+        #input-player-name:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(247,239,200,0.35);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        #input-school-name {
+            width: 100%;
+            padding: clamp(12px, 2.5vw, 18px) clamp(15px, 3vw, 25px);
+            border: clamp(2px, 0.5vw, 4px) solid var(--border-blue);
+            border-radius: 8px;
+            font-size: clamp(14px, 2vw, 20px);
+            font-weight: bold;
+            text-align: center;
+            margin: clamp(5px, 1vw, 10px) 0;
+            font-family: 'Poppins', sans-serif;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.4);
+            color: var(--dark-outline);
+        }
+
+        #input-school-name:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(247,239,200,0.35);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            color: var(--dark-outline);
+            font-family: 'Fredoka One', sans-serif;
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 900;
+            margin-bottom: clamp(8px, 2.5vw, 15px);
+        }
+
+        .screen-char-title {
+            color: var(--dark-text);
+            font-family: 'Fredoka One', sans-serif;
+            font-size: clamp(20px, 6vw, 30px);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            margin-top: clamp(16px, 4vw, 30px);
+            margin-bottom: clamp(20px, 5vw, 40px);
+            text-transform: uppercase;
+            text-shadow: 0 3px 12px rgba(15,42,69,0.25);
+        }
+
+        h2 {
+            color: var(--dark-outline);
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 900;
+            margin-bottom: clamp(10px, 3vw, 20px);
+            text-align: center;
+        }
+
+        p {
+            color: var(--dark-outline);
+            font-weight: bold;
+            margin: clamp(5px, 2vw, 10px) 0;
+            font-size: clamp(12px, 3vw, 16px);
+        }
+
+        ul {
+            text-align: left;
+            margin: clamp(10px, 3vw, 20px) 0;
+            list-style-type: disc;
+            padding-left: clamp(20px, 5vw, 30px);
+            font-size: clamp(12px, 3vw, 14px);
+        }
+
+        ul li {
+            color: var(--dark-outline);
+            font-weight: bold;
+            margin: clamp(5px, 2vw, 10px) 0;
+        }
+
+        .status-bar {
+            background: var(--soft-white);
+            border-bottom: 5px solid var(--border-blue);
+            padding: clamp(14px, 2vw, 18px) clamp(10px, 3vw, 30px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            z-index: 40;
+            gap: clamp(16px, 2vw, 22px);
+            min-height: auto;
+        }
+
+        .status-bar.hidden {
+            display: none !important;
+        }
+
+        .status-top-row {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(16px, 2vw, 20px);
+            width: 100%;
+        }
+
+        .status-metric-row {
+                display: flex;
+                flex-direction: column;
+                gap: clamp(12px, 1.5vw, 16px);
+        }
+
+        .status-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(12px, 2vw, 14px);
+            width: 100%;
+        }
+
+        .avatar-badge {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 1.5vw, 14px);
+            background: linear-gradient(135deg, var(--mid-blue) 0%, var(--accent-blue) 100%);
+            padding: clamp(16px, 2vw, 20px);
+            border-radius: 24px;
+            border: 1px solid rgba(32, 70, 141, 0.12);
+            width: 100%;
+            box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+        }
+
+        #status-avatar {
+            width: clamp(70px, 14vw, 100px);
+            height: clamp(70px, 14vw, 100px);
+        }
+
+        .player-info {
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+
+        .player-name {
+            font-weight: 900;
+            font-size: clamp(14px, 2.5vw, 20px);
+            display: block;
+            margin: 0 0 8px 0;
+            color: white;
+            line-height: 1.3;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .player-title {
+            font-size: clamp(9px, 1.5vw, 12px);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--dark-text);
+            margin: 8px 0 0 0;
+        }
+
+        .status-card {
+            background: rgba(247, 251, 255, 0.95);
+            border-radius: 20px;
+            border: 1px solid rgba(78,46,30,0.16);
+            box-shadow: 0 10px 22px rgba(32, 70, 141, 0.08);
+            padding: clamp(12px, 1.2vw, 16px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(6px, 1vw, 8px);
+            text-align: center;
+            min-height: auto;
+            width: 100%;
+        }
+
+        .location-info,
+        .stamina-info {
+            margin: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .location-label,
+        .stamina-label {
+            font-size: clamp(11px, 1.5vw, 13px);
+            font-weight: 700;
+            color: var(--dark-outline);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 0;
+        }
+
+        #current-loc {
+            font-weight: 900;
+            font-size: clamp(18px, 3vw, 20px);
+            color: var(--dark-outline);
+            margin: 0;
+            line-height: 1.1;
+            word-break: keep-all;
+            max-width: 100%;
+        }
+
+        #life-icons {
+            font-size: clamp(22px, 4vw, 26px);
+            letter-spacing: clamp(1px, 0.5vw, 2px);
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .game-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(12px, 2vw, 24px);
+            gap: clamp(24px, 3vw, 32px);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-cloud-blue) 52%, var(--soft-white) 100%);
+            position: relative;
+            width: 100%;
+        }
+
+        .game-board-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            gap: clamp(16px, 2vw, 24px);
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1024px) {
+            .game-board-wrapper {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: clamp(24px, 2vw, 28px);
+            }
+
+            .control-group {
+                position: static;
+                margin: 0;
+                align-self: flex-end;
+                width: fit-content;
+                margin-left: clamp(18px, 2vw, 24px);
+            }
+
+            .btn-dir-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: clamp(10px, 2vw, 14px);
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .game-main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .game-panel {
+                max-width: 100%;
+            }
+            .status-summary {
+                grid-template-columns: 1fr;
+            }
+            .screen-overlay {
+                align-items: flex-start;
+                justify-content: center;
+                padding-top: clamp(16px, 4vw, 18px);
+            }
+            .screen-overlay .content-card {
+                justify-content: flex-start;
+                max-height: calc(100vh - 32px);
+            }
+        }
+
+        .game-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 100%;
+            align-self: start;
+        }
+
+        .panel-card {
+            background: rgba(247, 251, 255, 0.92);
+            border: 1px solid var(--border-strong);
+            border-radius: 14px;
+            padding: 10px;
+            box-shadow: 0 6px 14px var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-height: auto;
+        }
+
+        .panel-card h2,
+        .panel-card h3 {
+            margin: 0;
+            font-size: 13px;
+            color: var(--dark-outline);
+            font-weight: 900;
+        }
+
+        .panel-card p {
+            margin: 0;
+            line-height: 1.35;
+            color: var(--dark-outline);
+            font-size: 10px;
+        }
+
+        .panel-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .panel-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            background: rgba(87, 130, 216, 0.12);
+            border-radius: 10px;
+            border: 1px solid rgba(93,140,210,0.10);
+        }
+
+        .metric-row span {
+            font-size: 9px;
+            color: var(--dark-outline);
+            font-weight: 700;
+        }
+
+        .metric-row strong {
+            font-size: 13px;
+            color: var(--dark-outline);
+            font-weight: 800;
+        }
+
+        .panel-tip-card {
+            background: rgba(247, 251, 255, 0.92);
+        }
+
+        .center-image {
+            width: 110%;
+            height: 110%;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 4px;
+            display: block;
+            margin: 0;
+            transform: scale(1.02);
+        }
+
+        .control-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            bottom: auto;
+            right: auto;
+            margin: 0 auto;
+            z-index: 1;
+            gap: 0;
+        }
+
+        .btn-dir-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(8px, 2vw, 12px);
+            width: fit-content;
+        }
+
+        .monopoly-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 10px;
+            background: var(--card-bg-tint);
+            padding: 16px;
+            border-radius: 16px;
+            width: min(820px, 90vw);
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            border: var(--border-width) solid var(--border-strong);
+            box-shadow: inset 0 0 12px rgba(93,140,210,0.06), 0 12px 30px var(--card-shadow);
+        }
+
+        .tile {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            min-width: 0;
+            min-height: 0;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border: 2px solid var(--border-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 6px 12px rgba(93,140,210,0.06);
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .tile.clickable:hover {
+            transform: translateY(-3px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 6px 15px rgba(126, 200, 227, 0.4);
+        }
+
+        .tile.active-target {
+            border-color: var(--border-strong);
+            animation: pulse 1.8s ease-in-out infinite;
+            box-shadow: 0 0 18px rgba(244, 197, 66, 0.65), inset 0 0 18px rgba(244, 197, 66, 0.25);
+        }
+
+        .tile span {
+            position: relative;
+            z-index: 10;
+            margin: 0;
+            display: inline-block;
+            width: 95%;
+            font-size: clamp(9px, 1vw, 11px);
+            line-height: 1.15;
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .tile-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            width: 100%;
+            border-radius: 2px 2px 0 0;
+            display: none;
+        }
+
+        .side-top .tile-header { display: none; }
+        .side-right .tile-header { display: none; }
+        .side-bottom .tile-header { display: none; }
+        .side-left .tile-header { display: none; }
+        .corner-tile { 
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border: 3px solid var(--border-strong);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        
+        .corner-tile .tile-header {
+            display: none;
+        }
+
+        .player-token {
+            position: absolute;
+            /* diperbesar agar jelas terlihat saat bergerak di papan */
+            width: clamp(56px, 12vw, 120px);
+            height: clamp(56px, 12vw, 120px);
+            max-width: 14%;
+            max-height: 14%;
+            z-index: 100;
+            transition: all 0.6s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            filter: drop-shadow(0 8px 6px rgba(0,0,0,0.45));
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .player-token img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .player-token.hidden {
+            display: none !important;
+        }
+
+        .control-group {
+            position: fixed;
+            bottom: clamp(15px, 4vw, 40px);
+            right: clamp(15px, 4vw, 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 60;
+        }
+
+        .control-group.hidden {
+            display: none !important;
+        }
+
+        .game-board-wrapper .control-group {
+            position: static;
+            margin: 0;
+            justify-content: center;
+            width: fit-content;
+            align-self: center;
+        }
+
+        @media (min-width: 1024px) {
+            .control-group {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin: 0;
+                align-self: center;
+                z-index: 1;
+            }
+        }
+
+        .btn-dir-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(8px, 2vw, 12px);
+            width: fit-content;
+        }
+
+        .btn-dir {
+            background: linear-gradient(135deg, var(--mid-blue) 0%, var(--accent-blue) 100%);
+            border: clamp(2px, 0.5vw, 3px) solid var(--dark-outline);
+            color: white;
+            width: clamp(55px, 12vw, 65px);
+            height: clamp(55px, 12vw, 65px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 clamp(3px, 1vw, 5px) 0 rgba(32, 70, 141, 0.2);
+            transition: all 0.15s;
+            font-size: clamp(18px, 4vw, 22px);
+            padding: 0;
+        }
+
+        .btn-dir:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-white) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 clamp(4px, 1.2vw, 7px) 0 var(--dark-outline);
+        }
+
+        .btn-dir:active:not(:disabled) { 
+            transform: translateY(2px); 
+            box-shadow: 0 clamp(1px, 0.3vw, 2px) 0 var(--dark-outline); 
+        }
+
+        .btn-dir:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #B0C9F7 0%, #8AABDF 100%);
+        }
+
+        .btn-dir.active {
+            background: linear-gradient(135deg, var(--soft-white) 0%, var(--light-blue) 100%);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 15px rgba(93, 132, 219, 0.45), 0 clamp(3px, 1vw, 5px) 0 var(--accent-blue);
+        }
+
+        .btn-dir span { 
+            display: none;
+        }
+
+        /* Region Notification Overlay */
+        #region-notification-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.48);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        #region-notification-overlay.show {
+            display: flex !important;
+        }
+
+        #region-notification-overlay .content-card {
+            max-width: min(95vw, 520px);
+            width: 100%;
+            padding: clamp(20px, 3vw, 28px);
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(76, 35, 17, 0.12);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+            border-radius: 26px;
+        }
+
+        #region-title {
+            margin: 0 0 clamp(16px, 3vw, 24px);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        #region-image {
+            width: 100%;
+            border-radius: 18px;
+            object-fit: cover;
+            box-shadow: 0 16px 34px rgba(0,0,0,0.16);
+            margin-bottom: clamp(18px, 3vw, 24px);
+        }
+
+        #region-info-box {
+            text-align: center;
+            margin-bottom: clamp(18px, 3vw, 24px);
+        }
+
+        #region-name {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+            font-size: clamp(18px, 3.5vw, 24px);
+        }
+
+        #region-description {
+            opacity: 0.9;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        #region-continue-btn {
+            margin-top: 10px;
+        }
+
+        /* Quiz Overlay */
+
+        #area-preview-overlay.show {
+            display: flex !important;
+        }
+
+        #area-preview-overlay .preview-image {
+            width: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            max-height: clamp(220px, 35vh, 320px);
+            margin-bottom: clamp(14px, 3vw, 18px);
+        }
+
+        #preview-title {
+            color: var(--dark-outline);
+            font-weight: 900;
+            font-size: clamp(22px, 5vw, 30px);
+            margin-bottom: clamp(10px, 2vw, 12px);
+        }
+
+        #preview-subtitle {
+            color: var(--dark-outline);
+            font-size: clamp(13px, 2.8vw, 16px);
+            margin-bottom: clamp(18px, 3vw, 22px);
+            line-height: 1.4;
+        }
+
+        #quiz-overlay {
+            display: none;
+        }
+
+        #quiz-overlay.show {
+            display: flex !important;
+        }
+
+        .quiz-header {
+            color: var(--dark-outline);
+            font-weight: 900;
+            font-size: clamp(10px, 2vw, 13px);
+            text-transform: uppercase;
+            letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+        }
+
+        .quiz-question {
+            font-size: clamp(18px, 4vw, 24px);
+            color: var(--dark-outline);
+            font-weight: bold;
+            font-style: italic;
+            line-height: 1.3;
+            margin-bottom: clamp(20px, 4vw, 30px);
+        }
+
+        #quiz-options {
+            display: grid;
+            gap: clamp(12px, 2.5vw, 15px);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+        }
+
+        .quiz-opt-btn {
+            background: linear-gradient(135deg, var(--soft-white) 0%, var(--light-blue) 100%);
+            border: clamp(2px, 0.5vw, 3px) solid var(--border-blue);
+            padding: clamp(12px, 2.5vw, 16px) clamp(10px, 2vw, 15px);
+            border-radius: clamp(8px, 2vw, 10px);
+            text-align: left;
+            font-weight: bold;
+            font-size: clamp(13px, 2.5vw, 16px);
+            color: var(--dark-outline);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+        }
+
+        /* Override for question card quiz options */
+        .question-card .quiz-opt-btn,
+        .question-card .quiz-options button {
+            font-size: 10px !important;
+            padding: 8px 12px !important;
+            font-weight: 400 !important;
+            border: 1px solid var(--border-blue) !important;
+            border-radius: 12px !important;
+            line-height: 1.4 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        }
+
+        .quiz-opt-btn:hover {
+            border-color: var(--soft-white);
+            background: linear-gradient(135deg, var(--soft-white) 0%, var(--light-blue) 100%);
+        }
+
+        .quiz-opt-btn:active {
+            transform: translateY(2px);
+        }
+
+        .quiz-opt-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #quiz-feedback-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(240, 248, 255, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 12px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        #quiz-feedback-box.show {
+            display: flex !important;
+        }
+
+        /* Quiz Cards Overlay */
+        #quiz-cards-overlay {
+            display: none;
+        }
+
+        #quiz-cards-overlay.show {
+            display: flex !important;
+        }
+
+        #quiz-cards-overlay .content-card {
+            max-width: 100vw;
+            width: 100%;
+            height: calc(100vh - 40px);
+            max-height: calc(100vh - 40px);
+            min-height: 0;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #quiz-cards-overlay .quiz-header {
+            margin: 0;
+            font-size: clamp(18px, 2.2vw, 24px);
+            letter-spacing: 0.08em;
+            text-align: center;
+            line-height: 1.1;
+            padding-bottom: 4px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-auto-rows: minmax(0, 1fr);
+            gap: 12px;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            align-items: stretch;
+        }
+
+        .card {
+            background: linear-gradient(135deg, var(--soft-cloud-blue) 0%, var(--card-bg-tint) 100%);
+            border: var(--border-width) solid var(--border-strong);
+            border-radius: 15px;
+            padding: 14px;
+            text-align: left;
+            box-shadow: 0 10px 22px var(--card-shadow);
+            transition: transform 0.28s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        .card-title {
+            font-weight: 400;
+            font-size: 10px;
+            color: var(--dark-outline);
+            margin-bottom: 8px;
+            letter-spacing: 0.08em;
+            min-height: 3.4em;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .card-content {
+            font-size: 10px;
+            color: var(--dark-outline);
+            line-height: 1.4;
+            flex: 1;
+            text-align: justify;
+        }
+
+        .description-card .card-content {
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-gutter: stable;
+            padding-right: 12px;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .question-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .question-scroll-area {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            width: 100%;
+            min-height: 0;
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-gutter: stable;
+            padding-right: 12px;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .question-card .card-content {
+            overflow: visible;
+            flex: 0 0 auto;
+            min-height: 0;
+            padding-right: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .question-card .card-content img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            display: block;
+            border-radius: 14px;
+            margin: 0 auto 12px auto;
+        }
+
+        .question-card .quiz-options {
+            padding-right: 0;
+            flex-shrink: 0;
+            display: grid;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .question-card .quiz-options button,
+        #quiz-cards-overlay .quiz-opt-btn {
+            width: 100%;
+            padding: clamp(8px, 1.2vw, 10px) clamp(10px, 1.4vw, 12px);
+            border-radius: 12px;
+            border: 1px solid var(--border-blue);
+            font-weight: 400;
+            text-align: left;
+            line-height: 1.4;
+            font-size: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .question-card .quiz-options button:hover,
+        #quiz-cards-overlay .quiz-opt-btn:hover {
+            border-color: var(--border-strong);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-auto-rows: minmax(0, 1fr);
+            gap: 12px;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            align-items: stretch;
+        }
+
+        .cards-container .card {
+            min-height: 0;
+        }
+
+        @media (max-width: 767px) {
+            #quiz-cards-overlay {
+                align-items: flex-start;
+                justify-content: flex-start;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+
+            #quiz-cards-overlay .cards-container {
+                grid-template-columns: 1fr !important;
+                grid-auto-rows: auto !important;
+                grid-auto-flow: row !important;
+                align-items: stretch;
+            }
+
+            #quiz-cards-overlay .card {
+                width: 100% !important;
+                min-width: 0 !important;
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                margin-bottom: 0;
+            }
+
+            #quiz-cards-overlay .content-card {
+                padding: 12px 10px;
+                height: auto !important;
+                max-height: none !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                justify-content: flex-start;
+                align-items: stretch;
+            }
+
+            #quiz-cards-overlay .description-card .card-content,
+            #quiz-cards-overlay .question-card .question-scroll-area,
+            #quiz-cards-overlay .question-card .card-content {
+                overflow: visible !important;
+                max-height: none !important;
+                height: auto !important;
+                flex: none !important;
+                padding-right: 0 !important;
+            }
+
+            #quiz-cards-overlay .question-card {
+                min-height: auto !important;
+                height: auto !important;
+            }
+
+            #quiz-cards-overlay .card-title {
+                min-height: auto !important;
+            }
+        }
+
+        /* Uniform scrollbar styling for all card scrollable areas */
+        .card-content,
+        .question-card,
+        .cards-container .card,
+        #quiz-cards-overlay .content-card {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(120,80,36,0.45) rgba(255,255,255,0.15);
+            scrollbar-gutter: stable both-edges;
+            padding-right: 12px; /* ensure thumb doesn't cover text */
+        }
+
+        .card-content::-webkit-scrollbar,
+        .question-card::-webkit-scrollbar,
+        .cards-container .card::-webkit-scrollbar,
+        #quiz-cards-overlay .content-card::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .card-content::-webkit-scrollbar-track,
+        .question-card::-webkit-scrollbar-track,
+        .cards-container .card::-webkit-scrollbar-track,
+        #quiz-cards-overlay .content-card::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.15);
+            border-radius: 999px;
+        }
+
+        .card-content::-webkit-scrollbar-thumb,
+        .question-card::-webkit-scrollbar-thumb,
+        .cards-container .card::-webkit-scrollbar-thumb,
+        #quiz-cards-overlay .content-card::-webkit-scrollbar-thumb {
+            background: rgba(120,80,36,0.45);
+            border-radius: 999px;
+            border: 2px solid rgba(255,255,255,0.6);
+        }
+
+        .card-content p {
+            margin: 4px 0;
+            font-size: 10px;
+            font-weight: 400;
+            text-align: justify;
+        }
+
+        .card-content strong {
+            font-weight: 400;
+        }
+
+        .card-content img {
+            max-height: 200px;
+            object-fit: contain;
+            display: block;
+            margin: 8px auto;
+            width: 100%;
+            max-width: 90%;
+        }
+
+        .description-card,
+        .question-card {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-white) 100%);
+        }
+
+        .quiz-options {
+            margin-top: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .quiz-options button {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 10px;
+            background: rgba(247, 251, 255, 0.92);
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 10px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(93,140,210,0.06);
+        }
+
+        /* Uniform font sizes for quiz overlay cards */
+        #quiz-cards-overlay .card-title {
+            font-size: 10px;
+            line-height: 1.2;
+        }
+
+        #quiz-cards-overlay .card-content,
+        #quiz-cards-overlay .card-content p {
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        #quiz-cards-overlay .quiz-options button,
+        #quiz-cards-overlay .quiz-opt-btn {
+            font-size: 10px !important;
+            padding: 8px 12px !important;
+            border-radius: 12px;
+            font-weight: 400 !important;
+            line-height: 1.4 !important;
+        }
+
+        .quiz-options button:hover {
+            background: rgba(255,255,255,1);
+        }
+
+        .quiz-options button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Adventure Overlay Container */
+        #adventure-overlay {
+            width: 100vw;
+            min-height: 100vh;
+            height: auto;
+            display: grid;
+            place-items: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: clamp(6px, 0.9vw, 12px);
+        }
+
+        #adventure-overlay::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #adventure-overlay::-webkit-scrollbar-track {
+            background: rgba(87, 130, 216, 0.12);
+        }
+
+        #adventure-overlay::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 4px;
+        }
+
+            .adventure-container {
+            width: min(98vw, 1260px);
+            max-width: 1260px;
+            height: min(96vh, 760px);
+            max-height: 760px;
+            background: linear-gradient(135deg, var(--soft-white) 0%, var(--soft-white) 50%);
+            border-radius: 24px;
+            border: 3px solid var(--border-strong);
+            padding: clamp(10px, 0.95vw, 14px);
+            display: grid;
+            grid-template-columns: minmax(250px, 27%) minmax(0, 73%);
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            grid-template-areas:
+                "title title"
+                "sidebar game"
+                "sidebar actions";
+            align-items: stretch;
+            gap: clamp(12px, 1vw, 14px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+            min-height: 0;
+            box-sizing: border-box;
+        }
+
+        .adventure-title {
+            grid-area: title;
+            font-size: clamp(20px, 3vw, 30px);
+            color: var(--dark-outline);
+            font-weight: 900;
+            margin: 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            line-height: 1.1;
+        }
+
+        /* Info Row - Wilayah & Alat Musik */
+        .adventure-info-row {
+            grid-area: sidebar;
+            display: grid;
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+            align-items: stretch;
+            gap: clamp(10px, 0.9vw, 12px);
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .adventure-info-card {
+            width: 100%;
+            min-width: 0;
+            min-height: 0;
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(200, 155, 60, 0.35);
+            border-radius: 16px;
+            padding: clamp(12px, 1.1vw, 18px);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .adventure-game-panel {
+            grid-area: game;
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+            min-width: 0;
+            min-height: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            align-self: stretch;
+        }
+
+        .adventure-info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+        }
+
+        .adventure-info-card .info-label {
+            text-align: center;
+            font-size: clamp(10px, 1vw, 12px);
+            letter-spacing: 0.08em;
+            line-height: 1.2;
+            width: 100%;
+        }
+
+        .info-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 0.9vw, 12px);
+            width: 100%;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .adventure-mini-image {
+            width: clamp(72px, 10vw, 140px);
+            height: clamp(72px, 10vw, 140px);
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--border-strong);
+            background: #fff;
+            flex: 0 0 auto;
+            display: block;
+        }
+
+        .info-value {
+            font-size: clamp(12px, 1.15vw, 15px);
+            font-weight: 900;
+            color: var(--dark-outline);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Mobile-only: stack info cards on top and game panel below */
+        @media (max-width: 480px) {
+            .adventure-container {
+                width: min(96vw, 420px);
+                max-width: 96vw;
+                height: auto;
+                max-height: 94vh;
+                padding: 12px;
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr auto;
+                grid-template-areas:
+                    "title"
+                    "sidebar"
+                    "game"
+                    "actions";
+                overflow: auto;
+            }
+
+            .adventure-info-row {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                align-items: stretch;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .adventure-info-card {
+                flex: 1 1 48%;
+                aspect-ratio: unset;
+                padding: 10px;
+                min-height: 0;
+            }
+
+            .adventure-game-panel {
+                width: 100%;
+                height: auto;
+                min-height: 180px;
+            }
+
+            .adventure-stage {
+                height: clamp(140px, 34vh, 300px);
+            }
+
+            .adventure-actions {
+                grid-area: actions;
+                text-align: center;
+            }
+
+            .adventure-title {
+                font-size: clamp(18px, 6vw, 24px);
+            }
+        }
+
+        #adventure-region-name {
+            display: block;
+            font-weight: 900;
+            color: var(--dark-text);
+            margin-top: 6px;
+        }
+
+        /* Game Stage */
+        .adventure-stage {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            min-height: 0;
+            min-width: 0;
+            margin: 0;
+            background-color: transparent;
+            background-image: url("https://raw.githubusercontent.com/yuramarvellyn-cmyk/RESONANCE-ODYSSEY-JUNI/ce94bd70c9afe0ea3e51ea04386e98f00a953784/mini%20game.png");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 4px solid rgba(87, 130, 216, 0.4);
+            box-shadow: inset 0 0 24px rgba(0,0,0,0.18), 0 12px 32px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+            align-self: stretch;
+            justify-self: stretch;
+            box-sizing: border-box;
+        }
+
+        .adventure-player {
+            position: absolute;
+            width: clamp(56px, 14vw, 72px);
+            height: clamp(64px, 16vw, 80px);
+            left: 50%;
+            bottom: 18%;
+            transform: translateX(-50%);
+            transition: none;
+            font-size: clamp(40px, 8vw, 48px);
+            z-index: 10;
+        }
+
+        .adventure-obstacle {
+            position: absolute;
+            width: clamp(36px, 8vw, 44px);
+            height: clamp(36px, 8vw, 44px);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--mid-blue) 100%);
+            color: #3f3f46;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(16px, 3.5vw, 20px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.18), 0 0 16px rgba(255, 215, 0, 0.4);
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+
+        .adventure-obstacle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: inherit;
+        }
+
+        .adventure-obstacle.hit {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* Instruction Text */
+        .adventure-actions {
+            grid-area: actions;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(8px, 0.8vw, 10px);
+            width: 100%;
+            min-height: 0;
+            box-sizing: border-box;
+            align-self: stretch;
+            padding-top: 0;
+        }
+
+        .adventure-instruction {
+            font-size: clamp(12px, 1.1vw, 14px);
+            color: var(--dark-outline);
+            text-align: center;
+            margin: 0;
+            font-weight: 700;
+            line-height: 1.3;
+            max-width: 100%;
+        }
+
+        /* Buttons */
+        .adventure-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 0.8vw, 10px);
+            width: min(100%, 380px);
+            justify-content: center;
+            align-items: center;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .adventure-btn {
+            width: 100%;
+            padding: clamp(12px, 1vw, 14px) clamp(18px, 1.8vw, 22px);
+            font-size: clamp(13px, 1.2vw, 15px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 8px 0 var(--dark-outline);
+            max-width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .adventure-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .adventure-status-hidden {
+            display: none;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #feedback-icon {
+            font-size: clamp(40px, 10vw, 60px);
+            margin-bottom: clamp(8px, 2vw, 10px);
+        }
+
+        #feedback-title {
+            font-size: clamp(20px, 5vw, 36px);
+            font-weight: 900;
+            margin-bottom: clamp(6px, 1.5vw, 10px);
+        }
+
+        #feedback-message {
+            font-weight: bold;
+            padding: 0 clamp(10px, 2vw, 20px);
+            text-align: center;
+            font-size: clamp(12px, 2.5vw, 15px);
+            line-height: 1.3;
+        }
+
+        .shake { animation: shake 0.4s; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .center-area {
+            grid-area: 2 / 2 / 5 / 5;
+            background: rgba(245, 235, 220, 0.85);
+            /* remove extra inner border to avoid double-lines */
+            border: none;
+            border-radius: 6px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+            min-height: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .center-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 4px;
+            display: block;
+            margin: 0;
+            transform: none;
+        }
+
+        /* In case tiles contain img elements instead of background images */
+        .tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            margin: 0;
+        }
+
+        /* Ensure all tile backgrounds render consistently */
+        .tile,
+        .corner-tile {
+            background-size: cover;
+            background-position: center center;
+        }
+
+        .center-title {
+            color: var(--dark-outline);
+            font-weight: 900;
+            font-size: clamp(18px, 4.5vw, 28px);
+            font-style: italic;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .center-subtitle {
+            color: var(--dark-outline);
+            opacity: 0.7;
+            font-size: clamp(8px, 1.5vw, 12px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            margin-top: clamp(6px, 1.5vw, 10px);
+        }
+
+        /* Character Grid */
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(clamp(150px, 18vw, 220px), 1fr));
+            justify-content: center;
+            justify-items: center;
+            gap: clamp(20px, 3vw, 32px);
+            margin: clamp(12px, 2vw, 20px) auto clamp(20px, 3vw, 32px);
+            width: min(100%, 1200px);
+            padding: 0 clamp(12px, 2vw, 20px);
+        }
+
+        .char-card {
+            width: 100%;
+            max-width: 220px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--border-strong);
+            padding: clamp(18px, 2.5vw, 24px);
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.28s;
+            box-shadow: 0 12px 32px rgba(93,140,210,0.18);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(16px, 2vw, 20px);
+            overflow: hidden;
+            min-height: clamp(230px, 28vw, 300px);
+        }
+
+        .char-card:hover {
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 14px 36px rgba(93,140,210,0.22);
+            transform: translateY(-4px);
+        }
+
+        .char-svg {
+            width: clamp(90px, 18vw, 120px);
+            height: clamp(110px, 22vw, 140px);
+            margin: 0 auto 12px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .char-card svg {
+            width: clamp(90px, 18vw, 120px) !important;
+            height: clamp(110px, 22vw, 140px) !important;
+            margin: 0 auto clamp(10px, 2vw, 12px) !important;
+            display: block !important;
+        }
+
+        .char-name {
+            font-weight: 900;
+            color: var(--dark-text);
+            text-transform: uppercase;
+            font-size: clamp(10px, 2.4vw, 13px);
+            line-height: 1.2;
+            margin: clamp(6px, 1.5vw, 10px) 0 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 clamp(6px, 1.5vw, 8px);
+            overflow-wrap: normal;
+            word-break: keep-all;
+            white-space: normal;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Home Menu Cards */
+        #screen-name .content-card {
+            max-width: min(95vw, 700px);
+            padding: clamp(20px, 3vw, 28px);
+            gap: clamp(8px, 1vw, 12px);
+        }
+
+        #screen-name h1 {
+            margin-bottom: clamp(4px, 1vw, 8px);
+        }
+
+        #screen-name p {
+            margin-bottom: clamp(6px, 1vw, 10px);
+        }
+
+        .home-cards-container {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(240px, 1fr));
+            gap: clamp(10px, 1.5vw, 16px);
+            justify-content: center;
+            width: 100%;
+            max-width: min(95vw, 620px);
+            margin: 0 auto;
+        }
+
+        .home-card {
+            background: white;
+            border: clamp(3px, 0.8vw, 6px) solid var(--border-blue);
+            border-radius: clamp(12px, 2vw, 20px);
+            padding: clamp(16px, 3vw, 20px);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            min-height: 220px;
+            max-width: 300px;
+            position: relative;
+            width: 100%;
+        }
+
+        .home-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            border-color: var(--soft-white);
+            background: linear-gradient(135deg, rgba(141, 188, 255, 0.1) 0%, rgba(126, 200, 227, 0.1) 100%);
+        }
+
+        .home-card:active {
+            transform: translateY(-2px);
+        }
+
+        .home-card-icon {
+            font-size: clamp(40px, 10vw, 72px);
+            margin-bottom: clamp(12px, 2vw, 20px);
+            display: block;
+        }
+
+        .home-card-title {
+            color: var(--dark-outline);
+            font-weight: 900;
+            font-size: clamp(16px, 3.5vw, 32px);
+            margin: clamp(8px, 1.5vw, 15px) 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .home-card-desc {
+            color: var(--dark-outline);
+            font-size: clamp(11px, 2.2vw, 18px);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            #screen-name .content-card {
+                max-width: 95vw;
+                padding: clamp(16px, 4vw, 24px);
+            }
+
+            .home-cards-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: clamp(12px, 3vw, 18px);
+                max-width: 100%;
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .home-card {
+                max-width: 100%;
+                min-height: 200px;
+                aspect-ratio: auto;
+                padding: clamp(14px, 3vw, 18px);
+            }
+
+            .home-card-icon {
+                font-size: clamp(34px, 10vw, 52px);
+                margin-bottom: clamp(10px, 2vw, 16px);
+            }
+
+            .home-card-title {
+                font-size: clamp(16px, 4vw, 22px);
+                margin: clamp(8px, 2vw, 12px) 0;
+            }
+
+            .home-card-desc {
+                font-size: clamp(12px, 3vw, 14px);
+            }
+
+            h1 {
+                font-size: clamp(24px, 8vw, 30px);
+                margin-bottom: clamp(10px, 2vw, 14px);
+            }
+
+            p {
+                font-size: clamp(12px, 3vw, 14px);
+                margin-bottom: clamp(8px, 2vw, 10px);
+            }
+        }
+
+        /* Kotak Form Nama & Sekolah */
+        #screen-player-info .content-card {
+            background: var(--card-bg-tint);
+            border: var(--border-width) solid var(--border-strong);
+            border-radius: clamp(18px, 2.5vw, 25px);
+            padding: clamp(14px, 1.2vw, 20px);
+            max-width: 640px;
+            width: min(88vw, 640px);
+            box-shadow: 0 20px 40px var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 1vw, 10px);
+            max-height: none;
+            overflow: visible;
+        }
+
+        #screen-player-info h1 {
+            font-size: clamp(30px, 4vw, 42px);
+            line-height: 1.08;
+            margin-bottom: 0;
+        }
+
+        #screen-player-info p {
+            color: var(--dark-outline);
+            font-size: clamp(14px, 2vw, 18px);
+            margin: clamp(4px, 0.8vw, 6px) 0;
+        }
+
+        #screen-player-info input {
+            width: min(86vw, 560px);
+            padding: clamp(12px, 1.4vw, 16px);
+            border: clamp(3px, 0.4vw, 5px) solid var(--border-blue);
+            border-radius: clamp(12px, 1.6vw, 14px);
+            background-color: rgba(255,255,255,0.95);
+            color: var(--dark-outline);
+            font-size: clamp(15px, 1.8vw, 18px);
+            text-align: center;
+            font-weight: 700;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.06);
+            margin: clamp(4px, 0.8vw, 8px) 0;
+        }
+
+        #screen-player-info input:focus {
+            outline: none;
+            box-shadow: 0 0 16px rgba(87, 130, 216, 0.35);
+            background-color: rgba(255,255,255,1);
+        }
+
+        #screen-player-info .btn-gold {
+            width: min(86vw, 560px);
+            max-width: 560px;
+            padding: clamp(14px, 1.4vw, 18px) clamp(18px, 2vw, 24px);
+            font-size: clamp(15px, 1.6vw, 18px);
+            margin-top: clamp(6px, 0.8vw, 8px);
+        }
+
+        #screen-player-info .btn-gold:hover {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-white) 100%);
+        }
+
+        /* Halaman Petunjuk Penggunaan */
+        #screen-instructions .content-card {
+            max-width: 720px;
+            width: min(92vw, 720px);
+            padding: clamp(18px, 2vw, 24px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 1.5vw, 18px);
+            text-align: center;
+            overflow: visible;
+        }
+
+        #screen-instructions h1 {
+            font-size: clamp(28px, 4vw, 36px);
+            margin-bottom: clamp(8px, 1vw, 12px);
+        }
+
+        #screen-instructions ul {
+            width: 100%;
+            max-width: 650px;
+            margin: 0;
+            padding-inline-start: clamp(18px, 3vw, 26px);
+            text-align: left;
+            line-height: 1.75;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(10px, 1vw, 14px);
+        }
+
+        #screen-instructions ul li {
+            margin: 0;
+        }
+
+        #screen-instructions .btn-gold {
+            width: min(84vw, 520px);
+            max-width: 520px;
+            padding: clamp(14px, 1.4vw, 18px) clamp(20px, 2vw, 26px);
+            margin-top: clamp(10px, 1vw, 12px);
+        }
+
+        #screen-instructions .btn-gold:hover {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-white) 100%);
+        }
+
+        /* Modal untuk Input Foto dan Tulisan */
+        #info-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(10px, 2.5vw, 30px);
+        }
+
+        #info-modal.show {
+            display: flex !important;
+        }
+
+        .info-modal-content {
+            background: white;
+            border-radius: clamp(15px, 3vw, 25px);
+            padding: clamp(25px, 5vw, 40px);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .info-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: clamp(20px, 3vw, 30px);
+            border-bottom: 2px solid var(--border-blue);
+            padding-bottom: clamp(15px, 2vw, 20px);
+        }
+
+        .info-modal-header h2 {
+            margin: 0;
+            color: var(--dark-outline);
+            font-size: clamp(20px, 4vw, 28px);
+        }
+
+        .info-modal-close {
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: var(--dark-outline);
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .info-modal-close:hover {
+            color: var(--soft-white);
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: clamp(20px, 3vw, 30px);
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--dark-outline);
+            font-weight: 700;
+            margin-bottom: clamp(8px, 1.5vw, 12px);
+            font-size: clamp(13px, 2.5vw, 16px);
+        }
+
+        .photo-upload-box {
+            border: 2px dashed var(--border-strong);
+            border-radius: 12px;
+            padding: clamp(20px, 3vw, 30px);
+            text-align: center;
+            background: var(--soft-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload-box:hover {
+            border-color: var(--soft-white);
+            background: var(--soft-white);
+        }
+
+        .photo-upload-box.has-file {
+            border-color: var(--dark-outline);
+            background: var(--soft-white);
+        }
+
+        #photo-input {
+            display: none;
+        }
+
+        .photo-preview {
+            margin-top: clamp(12px, 2vw, 15px);
+            display: none;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .photo-preview.show {
+            display: block;
+        }
+
+        #text-input {
+            width: 100%;
+            padding: clamp(12px, 2vw, 15px);
+            border: 2px solid var(--border-strong);
+            border-radius: 8px;
+            font-size: clamp(13px, 2.5vw, 16px);
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark-outline);
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s;
+        }
+
+        #text-input:focus {
+            outline: none;
+            border-color: var(--soft-white);
+            box-shadow: 0 0 15px rgba(141, 188, 255, 0.3);
+            background-color: var(--soft-white);
+        }
+
+        .info-modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(12px, 2vw, 15px);
+            margin-top: clamp(20px, 3vw, 30px);
+        }
+
+        .btn-cancel, .btn-submit {
+            padding: clamp(12px, 2vw, 15px) clamp(15px, 3vw, 20px);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: clamp(13px, 2.5vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cancel {
+            background: #E0E0E0;
+            color: var(--dark-text);
+        }
+
+        .btn-cancel:hover {
+            background: #D0D0D0;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--mid-blue) 0%, var(--accent-blue) 100%);
+            color: white;
+            border: 2px solid var(--border-strong);
+            box-shadow: 0 6px 16px rgba(93,140,210,0.14);
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--soft-white) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(93,140,210,0.18);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Landscape Mode */
+        @media (orientation: landscape) {
+            .home-cards-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: clamp(20px, 4vw, 40px);
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .home-card {
+                min-height: clamp(120px, 28vh, 280px);
+                padding: clamp(20px, 3vw, 30px);
+            }
+
+            .home-card-icon {
+                font-size: clamp(40px, 10vh, 80px);
+                margin-bottom: clamp(10px, 1.5vw, 15px);
+            }
+
+            .home-card-title {
+                font-size: clamp(16px, 3vh, 28px);
+                margin: clamp(6px, 1vw, 12px) 0;
+            }
+
+            .home-card-desc {
+                font-size: clamp(11px, 2vh, 15px);
+            }
+
+            .content-card {
+                max-width: calc(100vw - 40px);
+                width: 100%;
+                max-height: 90vh;
+                padding: clamp(20px, 3vw, 30px);
+            }
+
+            h1 {
+                font-size: clamp(26px, 5vw, 36px);
+                margin-bottom: clamp(10px, 1.5vw, 15px);
+            }
+
+            p {
+                font-size: clamp(13px, 2vw, 16px);
+                margin: clamp(5px, 1vw, 10px) 0;
+            }
+
+            #input-player-name, #input-school-name {
+                font-size: clamp(14px, 2.5vw, 22px);
+                padding: clamp(12px, 2vw, 20px) clamp(14px, 3vw, 28px);
+                margin: clamp(5px, 1vw, 8px) 0;
+            }
+        }
+
+        /* Desktop/Laptop Mode */
+        @media (min-width: 1024px) {
+            #input-player-name, #input-school-name {
+                font-size: clamp(14px, 2.5vw, 22px);
+                padding: clamp(12px, 2vw, 20px) clamp(16px, 3vw, 32px);
+                margin: clamp(5px, 1vw, 8px) auto;
+                display: block;
+                max-width: 700px;
+            }
+
+            .btn-gold {
+                font-size: clamp(12px, 2vw, 20px);
+                padding: clamp(12px, 2vw, 20px) clamp(30px, 6vw, 50px);
+                max-width: 700px;
+                display: block;
+                margin: clamp(10px, 2vw, 30px) auto 0;
+            }
+
+            h1 {
+                font-size: clamp(24px, 5vw, 50px);
+            }
+
+            p {
+                font-size: 18px;
+            }
+        }
+
+        /* End Screen */
+        #end-overlay {
+            display: none;
+        }
+
+        #end-overlay.show {
+            display: flex !important;
+        }
+
+        #end-title {
+            font-size: clamp(28px, 7vw, 48px);
+            font-weight: 900;
+            margin-bottom: clamp(12px, 3vw, 20px);
+        }
+
+        #end-message {
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: clamp(14px, 3vw, 18px);
+            margin-bottom: clamp(15px, 3vw, 30px);
+            line-height: 1.4;
+        }
+
+        /* Mobile Responsive - Tablet (max 768px) */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: clamp(10px, 3vw, 20px);
+            }
+
+            .screen-overlay {
+                padding: 0 10px;
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .content-card {
+                width: min(92vw, 420px);
+                max-width: 420px;
+                padding: clamp(15px, 4vw, 24px);
+                border: clamp(5px, 1.5vw, 8px) solid var(--border-blue);
+                margin: 0 auto;
+            }
+
+            .status-bar {
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+                text-align: center;
+                padding: clamp(10px, 2.5vw, 15px);
+                row-gap: clamp(10px, 2vw, 15px);
+            }
+
+            .status-left {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: clamp(10px, 2vw, 15px);
+            }
+
+            .avatar-badge {
+                gap: clamp(4px, 1.5vw, 8px);
+                padding: clamp(4px, 1vw, 6px) clamp(6px, 1.5vw, 10px);
+                width: 100%;
+                justify-content: center;
+            }
+
+            .location-info {
+                margin: clamp(5px, 1.5vw, 10px) 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .stamina-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .control-group {
+                bottom: clamp(15px, 3vw, 25px);
+                right: clamp(15px, 3vw, 25px);
+            }
+
+            .btn-dir-container {
+                gap: clamp(6px, 1.5vw, 10px);
+            }
+
+            .btn-dir {
+                width: clamp(55px, 12vw, 65px);
+                height: clamp(55px, 12vw, 65px);
+                font-size: clamp(14px, 3.5vw, 18px);
+            }
+
+            .monopoly-board {
+                width: min(90vw, 90vh);
+                aspect-ratio: 1 / 1;
+                padding: clamp(6px, 1.5vw, 10px);
+                gap: clamp(3px, 0.8vw, 5px);
+            }
+
+            .tile {
+                padding: clamp(3px, 0.8vw, 5px) clamp(2px, 0.5vw, 4px) clamp(4px, 1vw, 6px) clamp(2px, 0.5vw, 4px);
+                min-height: clamp(45px, 9vw, 55px);
+                font-size: clamp(8px, 1.3vw, 10px);
+            }
+
+            .tile span {
+                font-size: clamp(8px, 1.2vw, 9px);
+                max-width: 90%;
+            }
+
+            .screen-overlay .content-card {
+                width: min(92vw, 420px);
+                max-width: 420px;
+                padding-top: clamp(20px, 4vw, 28px);
+                padding-bottom: clamp(14px, 4vw, 18px);
+            }
+
+            .screen-char-title {
+                font-size: clamp(22px, 8vw, 28px);
+                margin: clamp(18px, 5vw, 25px) 0 clamp(18px, 4vw, 25px);
+                letter-spacing: 0.08em;
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(2, minmax(120px, 1fr));
+                justify-items: center;
+                gap: clamp(12px, 5vw, 20px);
+                margin-bottom: clamp(15px, 4vw, 24px);
+                width: 100%;
+                padding: 0 clamp(12px, 2vw, 16px);
+            }
+
+            .char-card {
+                width: 100%;
+                max-width: 160px;
+                padding: clamp(12px, 3vw, 16px);
+                min-height: clamp(170px, 26vw, 210px);
+                background: rgba(255, 255, 255, 0.88);
+                backdrop-filter: blur(10px);
+                border: 2px solid var(--border-strong);
+                box-shadow: 0 10px 28px rgba(93,140,210,0.16);
+                overflow: hidden;
+            }
+
+            .char-card:hover {
+                border-color: var(--accent-blue);
+                background: rgba(255, 255, 255, 0.92);
+                box-shadow: 0 12px 32px rgba(93,140,210,0.20);
+                transform: translateY(-2px);
+            }
+
+            .char-name {
+                font-size: clamp(10px, 2.3vw, 12px);
+                color: var(--dark-text);
+                line-height: 1.2;
+                margin-top: clamp(8px, 2vw, 10px);
+            }
+
+            .char-svg,
+            .char-card svg {
+                width: clamp(55px, 17vw, 72px) !important;
+                height: clamp(70px, 19vw, 85px) !important;
+            }
+
+            .quiz-header {
+                font-size: clamp(10px, 1.5vw, 12px);
+            }
+
+            .quiz-question {
+                font-size: clamp(16px, 3.5vw, 22px);
+                margin-bottom: clamp(20px, 4vw, 25px);
+            }
+
+            .quiz-opt-btn {
+                padding: clamp(10px, 2vw, 14px) clamp(10px, 1.8vw, 12px);
+                font-size: clamp(12px, 2.3vw, 15px);
+            }
+
+            .question-card .quiz-opt-btn,
+            .question-card .quiz-options button {
+                font-size: 10px !important;
+                padding: 8px 12px !important;
+                font-weight: 400 !important;
+            }
+
+            #input-player-name {
+                font-size: clamp(14px, 2.8vw, 16px);
+                padding: clamp(8px, 1.8vw, 10px) clamp(10px, 2.5vw, 12px);
+            }
+        }
+
+        /* Mobile Responsive - Phone (max 480px) */
+        @media (max-width: 480px) {
+            .game-container {
+                padding: clamp(8px, 2vw, 12px);
+            }
+
+            .screen-overlay {
+                padding: 0 8px;
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .content-card {
+                width: min(92vw, 360px);
+                max-width: 360px;
+                padding: clamp(12px, 3vw, 18px);
+                border: clamp(4px, 1vw, 6px) solid var(--border-blue);
+                max-height: 90vh;
+                margin: 0 auto;
+            }
+
+            /* Fix instructions card symmetry on phones */
+            #screen-instructions .content-card {
+                width: min(92vw, 360px);
+                max-width: 360px;
+                padding: clamp(14px, 3vw, 20px);
+                margin: 0 auto;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            #screen-instructions .content-card ul {
+                text-align: left;
+                max-width: calc(100% - 28px);
+                margin: 0.75rem auto 0 auto;
+                padding-left: 18px;
+            }
+
+            #screen-instructions .content-card p,
+            #screen-instructions .content-card li {
+                line-height: 1.5;
+                font-size: clamp(12px, 2.5vw, 14px);
+            }
+
+            /* Fix player info symmetry on phones */
+            #screen-player-info .content-card {
+                width: min(92vw, 360px);
+                max-width: 360px;
+                padding: clamp(12px, 3vw, 18px);
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            #screen-player-info input,
+            #screen-player-info .btn-gold {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            #screen-player-info h1 {
+                margin-top: 4px;
+            }
+
+            .status-bar {
+                padding: clamp(8px, 2vw, 10px);
+                flex-wrap: wrap;
+                gap: clamp(8px, 2vw, 10px);
+            }
+
+            .status-left {
+                width: 100%;
+                gap: clamp(8px, 2vw, 10px);
+            }
+
+            .avatar-badge {
+                flex: 1;
+                justify-content: center;
+                min-width: 150px;
+            }
+
+            .location-info, .stamina-info {
+                width: 100%;
+                margin: 0;
+            }
+
+            .location-label, .stamina-label {
+                font-size: clamp(6px, 1.2vw, 8px);
+            }
+
+            .player-name, #current-loc {
+                font-size: clamp(11px, 2.5vw, 14px);
+            }
+
+            .control-group {
+                bottom: clamp(10px, 2vw, 15px);
+                right: clamp(10px, 2vw, 15px);
+            }
+
+            .btn-dir-container {
+                gap: clamp(5px, 1.2vw, 8px);
+            }
+
+            .btn-dir {
+                width: clamp(50px, 11vw, 60px);
+                height: clamp(50px, 11vw, 60px);
+                font-size: clamp(12px, 3vw, 16px);
+                box-shadow: 0 clamp(2px, 0.5vw, 3px) 0 rgba(32, 70, 141, 0.18);
+            }
+
+            .monopoly-board {
+                width: min(75vh, 100vw);
+                height: min(75vh, 100vw);
+                padding: clamp(4px, 1vw, 6px);
+                gap: clamp(2px, 0.4vw, 3px);
+                border: clamp(3px, 0.8vw, 4px) solid var(--border-strong);
+            }
+
+            .tile {
+                padding: clamp(2px, 0.4vw, 3px) clamp(2px, 0.3vw, 3px);
+                min-height: clamp(35px, 7vw, 45px);
+                font-size: clamp(7px, 1vw, 9px);
+                border: clamp(1.5px, 0.3vw, 2px) solid var(--border-blue);
+            }
+
+            .tile span {
+                font-size: clamp(6px, 0.9vw, 8px);
+                max-width: 85%;
+                margin-top: clamp(2px, 0.5vw, 4px);
+            }
+
+            .tile-header {
+                height: 22%;
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(1, minmax(140px, 1fr));
+                justify-items: center;
+                gap: clamp(10px, 3vw, 15px);
+                margin-bottom: clamp(10px, 3vw, 20px);
+                padding: 0 clamp(8px, 2vw, 12px);
+            }
+
+            .char-card {
+                width: min(90vw, 180px);
+                padding: clamp(10px, 2.5vw, 14px);
+                background: rgba(255, 255, 255, 0.88);
+                backdrop-filter: blur(10px);
+                border: 2px solid var(--border-strong);
+                box-shadow: 0 10px 28px rgba(93,140,210,0.16);
+                min-height: clamp(160px, 26vw, 200px);
+                justify-content: center;
+                overflow: hidden;
+            }
+
+            .char-card:hover {
+                border-color: var(--accent-blue);
+                background: rgba(255, 255, 255, 0.92);
+                box-shadow: 0 12px 32px rgba(93,140,210,0.20);
+                transform: translateY(-2px);
+            }
+
+            .char-name {
+                font-size: clamp(10px, 2.1vw, 11px);
+                color: var(--dark-text);
+                line-height: 1.2;
+                margin-top: clamp(6px, 1.5vw, 8px);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .char-svg {
+                width: clamp(50px, 11vw, 70px);
+                height: clamp(62px, 13vw, 85px);
+            }
+
+            /* Ensure avatar selection wrapper is centered and constrained */
+                padding: 0 clamp(8px, 2vw, 12px);
+            }
+
+            .char-card {
+                width: 100%;
+                max-width: 180px;
+                padding: clamp(10px, 2.5vw, 14px);
+                min-height: clamp(150px, 22vw, 190px);
+                background: rgba(255, 255, 255, 0.88);
+                backdrop-filter: blur(10px);
+                border: 2px solid var(--border-strong);
+                box-shadow: 0 8px 20px rgba(93,140,210,0.14);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .char-card:hover {
+                border-color: var(--accent-blue);
+                background: rgba(255, 255, 255, 0.92);
+                box-shadow: 0 10px 26px rgba(93,140,210,0.18);
+                transform: translateY(-2px);
+            }
+
+            .char-name {
+                font-size: clamp(10px, 2vw, 11px);
+                color: var(--dark-text
+                width: 100%;
+                max-width: 180px;
+                padding: clamp(10px, 2.5vw, 14px);
+                min-height: clamp(150px, 22vw, 190px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .char-name {
+                font-size: clamp(10px, 2vw, 11px);
+            }
+
+            h1 {
+                font-size: clamp(24px, 6vw, 36px);
+                margin-bottom: clamp(10px, 2vw, 15px);
+                margin-top: clamp(8px, 1.5vw, 12px);
+            }
+
+            h2 {
+                font-size: clamp(18px, 5vw, 28px);
+                margin-bottom: clamp(8px, 2vw, 12px);
+            }
+
+            p, ul li {
+                font-size: clamp(11px, 2.5vw, 13px);
+            }
+
+            ul {
+                padding-left: clamp(15px, 4vw, 20px);
+                margin: clamp(8px, 2vw, 15px) 0;
+            }
+
+            .quiz-header {
+                font-size: clamp(9px, 1.3vw, 11px);
+                margin-bottom: clamp(12px, 2.5vw, 15px);
+            }
+
+            .quiz-question {
+                font-size: clamp(13px, 3vw, 18px);
+                margin-bottom: clamp(15px, 3vw, 20px);
+            }
+
+            .quiz-options {
+                margin-top: 10px;
+                display: grid;
+                gap: 8px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                max-height: 300px;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding-right: 4px;
+            }
+
+            .quiz-options::-webkit-scrollbar {
+                display: none;
+            }
+            .quiz-opt-btn {
+                padding: clamp(10px, 1.8vw, 12px) clamp(8px, 1.5vw, 10px);
+                font-size: clamp(11px, 2vw, 14px);
+                border: clamp(1.5px, 0.3vw, 2px) solid var(--border-strong);
+            }
+
+            .center-title {
+                font-size: clamp(16px, 3.5vw, 20px);
+            }
+
+            .center-subtitle {
+                font-size: clamp(8px, 1.2vw, 9px);
+            }
+
+            #input-player-name {
+                font-size: clamp(13px, 2.5vw, 15px);
+                padding: clamp(8px, 1.5vw, 10px) clamp(8px, 2vw, 10px);
+                margin: clamp(10px, 2vw, 15px) 0;
+            }
+
+            .btn-gold {
+                padding: clamp(10px, 2vw, 12px) clamp(15px, 3vw, 20px);
+                font-size: clamp(12px, 2.3vw, 14px);
+                letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            }
+
+            #end-title {
+                font-size: clamp(32px, 7vw, 42px);
+                margin-bottom: clamp(12px, 2.5vw, 15px);
+            }
+
+            #end-message {
+                font-size: clamp(12px, 2.5vw, 16px);
+                margin-bottom: clamp(15px, 3vw, 25px);
+            }
+
+            #life-icons {
+                font-size: clamp(16px, 3.5vw, 20px);
+                letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            }
+
+            #feedback-icon {
+                font-size: clamp(40px, 10vw, 55px);
+                margin-bottom: clamp(8px, 1.5vw, 10px);
+            }
+
+            #feedback-title {
+                font-size: clamp(24px, 5vw, 32px);
+                margin-bottom: clamp(6px, 1vw, 8px);
+            }
+
+            #feedback-message {
+                font-size: clamp(11px, 2.3vw, 13px);
+                padding: 0 clamp(10px, 2vw, 15px);
+            }
+        }
+
+        /* Extra Small Devices (max 360px) */
+        @media (max-width: 360px) {
+            .monopoly-board {
+                width: min(70vh, 100vw);
+                height: min(70vh, 100vw);
+            }
+
+            .tile {
+                min-height: clamp(30px, 6vw, 40px);
+                font-size: clamp(6px, 0.8vw, 8px);
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .control-group {
+                bottom: clamp(8px, 1.5vw, 12px);
+                right: clamp(8px, 1.5vw, 12px);
+            }
+
+            .btn-dir-container {
+                gap: clamp(4px, 1vw, 6px);
+            }
+
+            .btn-dir {
+                width: clamp(48px, 10vw, 55px);
+                height: clamp(48px, 10vw, 55px);
+                font-size: clamp(11px, 2.8vw, 15px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN 1: Home Menu dengan 2 Kartu -->
+    <div id="screen-name" class="screen-overlay">
+        <div class="content-card">
+            <h1>RESONANCE ODYSSEY</h1>
+            <p>Selamat Datang, Penjelajah!</p>
+            
+            <div class="home-cards-container">
+                <!-- Card 1: Main Game -->
+                <div class="home-card" onclick="startGameFlow()">
+                    <span class="home-card-icon">🎮</span>
+                    <h3 class="home-card-title">Main Game</h3>
+                    <p class="home-card-desc">Mulai petualangan seru!</p>
+                </div>
+                
+                <!-- Card 2: Info/Help -->
+                <div class="home-card" onclick="openInfoModal()">
+                    <span class="home-card-icon">❓</span>
+                    <h3 class="home-card-title">Tentang</h3>
+                    <p class="home-card-desc">Tambahkan info Anda</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 1.5: Input Nama dan Sekolah -->
+    <div id="screen-player-info" class="screen-overlay hidden">
+        <div class="content-card">
+            <h1>RESONANCE ODYSSEY</h1>
+            <p>Masukkan Informasi Pemain</p>
+            <input type="text" id="input-player-name" placeholder="Ketik namamu di sini...">
+            <input type="text" id="input-school-name" placeholder="Ketik nama sekolahmu di sini...">
+            <button class="btn-gold" onclick="confirmPlayerInfo()">LANJUT KE PILIHAN AVATAR</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: Aturan -->
+    <div id="screen-rules" class="screen-overlay hidden">
+        <div class="content-card">
+            <h2>ATURAN PERMAINAN</h2>
+            <ul>
+                    <li>Klik kotak kota berikutnya untuk bergerak di peta.</li>
+                <li>Setiap wilayah baru akan memberikan tantangan musik daerah tersebut.</li>
+                <li>Jawaban benar akan menambah poin, salah tetap melanjutkan permainan.</li>
+                <li>Tujuanmu adalah mengunjungi seluruh wilayah dan kumpulkan pengetahuan musik Nusantara.</li>
+                <li>Karakter akan berjalan santai mengikuti langkahmu.</li>
+            </ul>
+            <button class="btn-gold" onclick="showCharSelect()">NEXT (Pilih Karakter)</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: Pilih Karakter -->
+    <div id="screen-char" class="screen-overlay hidden">
+        <div style="text-align: center; width: 100%; max-width: clamp(500px, 95vw, 1000px);">
+            <h1 class="screen-char-title">PILIH AVATARMU</h1>
+            <div class="char-grid" id="selection-grid"></div>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: Petunjuk Penggunaan -->
+    <div id="screen-instructions" class="screen-overlay hidden">
+        <div class="content-card">
+            <h1>Petunjuk Penggunaan Game</h1>
+            <ul style="text-align: left; margin: clamp(10px, 2vw, 30px) 0; line-height: 1.6;">
+                <li><strong>Gerak:</strong> Klik kotak kota berikutnya untuk bergerak di peta.</li>
+                <li><strong>Kunjungi Kota:</strong> Setiap kota memiliki pertanyaan musik Nusantara yang harus dijawab.</li>
+                <li><strong>Jawab Soal:</strong> Pilih jawaban yang benar untuk mendapatkan poin dan melanjutkan perjalanan.</li>
+                <li><strong>Tips:</strong> Fokus pada jawaban yang tepat untuk meningkatkan skor.</li>
+                <li><strong>Tujuan:</strong> Selesaikan perjalanan melintasi Nusantara dan kumpulkan pengetahuan musik.</li>
+            </ul>
+            <button class="btn-gold" onclick="startGame()">NEXT</button>
+        </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <header id="top-status" class="status-bar hidden">
+        <div class="status-top-row">
+            <div class="avatar-badge">
+                <div id="status-avatar"></div>
+                <div class="player-info">
+                    <span class="player-name" id="display-player-name"></span>
+                    <span class="player-title">Pecinta Musik Nusantara</span>
+                </div>
+            </div>
+            <div class="status-metric-row">
+                <div class="status-card location-info">
+                    <div class="location-label">Lokasi</div>
+                    <div id="current-loc">-</div>
+                </div>
+                <!-- Stamina removed -->
+            </div>
+        </div>
+    </header>
+
+    <!-- GAME BOARD -->
+    <main class="game-main">
+        <div class="game-board-wrapper">
+            <div id="board" class="monopoly-board">
+                <div class="center-area">
+                    <img src="https://raw.githubusercontent.com/riyanarahman320/26/main/BANDUNG.png" alt="Resonance Odyssey" class="center-image">
+                    <h3 class="center-title" style="margin-top: 8px; font-size: clamp(14px, 3vw, 20px);"></h3>
+                </div>
+                <div id="player-token" class="player-token hidden"></div>
+            </div>
+        </div>
+    </main>
+
+    <aside class="game-panel">
+        <div class="panel-card panel-mission-card">
+            <h2>Misi Saat Ini</h2>
+            <p>Kunjungi kota berikutnya dan jawab pertanyaan musik Nusantara.</p>
+            <div class="panel-metrics">
+                <div class="metric-row"><span>Progress</span><strong id="panel-progress">0 / 15 Kota</strong></div>
+                <div class="metric-row"><span>Skor</span><strong id="panel-score">0</strong></div>
+            </div>
+            <div class="panel-summary-grid">
+                <div class="status-summary-item">
+                    <div class="status-summary-label">Jawaban Benar</div>
+                    <strong id="panel-correct">0</strong>
+                </div>
+                <div class="status-summary-item">
+                    <div class="status-summary-label">Jawaban Salah</div>
+                    <strong id="panel-wrong">0</strong>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- REGION NOTIFICATION MODAL -->
+    <div id="region-notification-overlay" class="screen-overlay hidden">
+        <div class="content-card">
+            <h2 id="region-title" style="font-size: clamp(32px, 8vw, 48px); margin-bottom: clamp(20px, 4vw, 30px);">📍 WILAYAH BARU</h2>
+            <img id="region-image" src="" alt="Region" class="preview-image" style="max-height: clamp(200px, 40vh, 400px); margin-bottom: clamp(20px, 3vw, 30px); border-radius: 12px; transition: all 0.5s ease;">
+            <div id="region-info-box" style="background: rgba(87, 130, 216, 0.12); border: 2px solid var(--border-strong); border-radius: 16px; padding: clamp(16px, 3vw, 24px); margin-bottom: clamp(20px, 3vw, 30px);">
+                <p id="region-name" style="font-size: clamp(20px, 4vw, 28px); font-weight: 900; color: var(--dark-outline); margin: 0; margin-bottom: 10px;"></p>
+                <p id="region-description" style="font-size: clamp(13px, 2.5vw, 16px); color: var(--dark-outline); margin: 0; line-height: 1.5;"></p>
+            </div>
+            <button class="btn-gold" id="region-continue-btn" onclick="closeRegionNotification()">LANJUT</button>
+        </div>
+    </div>
+
+    <!-- AREA PREVIEW OVERLAY -->
+    <div id="area-preview-overlay" class="screen-overlay hidden">
+        <div class="content-card">
+            <img id="preview-image" src="" alt="Preview Area" class="preview-image">
+            <h2 id="preview-title"></h2>
+            <p id="preview-subtitle">Kamu telah sampai di satu wilayah baru. Tekan tombol untuk masuk ke pertanyaan musik.</p>
+            <button class="btn-gold" id="preview-action" onclick="closeAreaPreview()">MASUK KE SOAL</button>
+        </div>
+    </div>
+
+    <!-- ADVENTURE OVERLAY -->
+    <div id="adventure-overlay" class="screen-overlay hidden">
+        <div class="adventure-container">
+            <h2 class="adventure-title">MINI-GAME PETUALANGAN</h2>
+            
+            <div class="adventure-info-row">
+                <div class="adventure-info-card">
+                    <div class="info-label">WILAYAH</div>
+                    <div class="info-main">
+                        <img src="https://raw.githubusercontent.com/riyanarahman320/26/main/BANDUNG.png" alt="Wilayah Jawa Barat" class="adventure-mini-image">
+                        <span id="adventure-region-name" class="info-value">Jawa Barat</span>
+                    </div>
+                </div>
+                <div class="adventure-info-card">
+                    <div class="info-label">ALAT MUSIK</div>
+                    <div class="info-main">
+                        <img src="https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/2316af59054f31128ec8fb930243ec71875b4051/Hijau%20dan%20Biru%20Warna-warni%20Lucu%20Ilustrasi%20Alam%20Doa%20Masuk%20Rumah%20A4%20Dokumen%20(Logo).png" alt="Alat Musik Angklung" class="adventure-mini-image">
+                        <span id="adventure-instrument-name" class="info-value">Angklung</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="adventure-game-panel">
+                <div id="adventure-stage" class="adventure-stage">
+                    <div id="adventure-player" class="adventure-player">🧍</div>
+                </div>
+            </div>
+
+            <div class="adventure-actions">
+                <p id="adventure-instruction" class="adventure-instruction"></p>
+                <div class="adventure-buttons">
+                    <button id="adventure-start-btn" class="btn-gold adventure-btn" onclick="startAdventure()">MULAI</button>
+                    <button id="adventure-continue-btn" class="btn-gold adventure-btn hidden" onclick="proceedToQuiz()">LANJUT KE SOAL</button>
+                </div>
+            </div>
+            
+            <p id="adventure-status" class="adventure-status-hidden"></p>
+        </div>
+    </div>
+
+    <!-- QUIZ CARDS OVERLAY -->
+    <div id="quiz-cards-overlay" class="screen-overlay">
+        <div class="content-card">
+            <div class="quiz-header">Kartu Angklung</div>
+            <div class="cards-container">
+                <div class="card description-card" id="card-1">
+                    <div class="card-title">Deskripsi Soal</div>
+                    <div class="card-content" id="desc-1"></div>
+                </div>
+                <div class="card description-card" id="card-2">
+                    <div class="card-title">Deskripsi Soal</div>
+                    <div class="card-content" id="desc-2"></div>
+                </div>
+                <div class="card question-card" id="card-3">
+                    <div class="card-title">Soal 1</div>
+                    <div class="question-scroll-area">
+                        <div class="card-content" id="question-card-3"></div>
+                        <div class="quiz-options" id="options-3"></div>
+                    </div>
+                </div>
+                <div class="card question-card" id="card-4">
+                    <div class="card-title">Soal 2</div>
+                    <div class="question-scroll-area">
+                        <div class="card-content" id="question-card-4"></div>
+                        <div class="quiz-options" id="options-4"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-gold" id="continue-to-quiz-btn" style="display:none;">Lanjut ke Tantangan</button>
+        </div>
+    </div>
+
+    <!-- QUIZ OVERLAY -->
+    <div id="quiz-overlay" class="screen-overlay">
+        <div class="content-card">
+            <div class="quiz-header" id="quiz-header"></div>
+            <div class="quiz-question" id="quiz-question"></div>
+            <div id="quiz-options"></div>
+            
+            <div id="quiz-feedback-box">
+                <div id="feedback-icon"></div>
+                <div id="feedback-title"></div>
+                <div id="feedback-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END GAME OVERLAY -->
+    <div id="end-overlay" class="screen-overlay">
+        <div class="content-card">
+            <div id="end-title"></div>
+            <div id="end-message"></div>
+            <button class="btn-gold" onclick="location.reload()">MAIN LAGI 🔄</button>
+        </div>
+    </div>
+
+    <!-- MODAL: Input Foto dan Tulisan -->
+    <div id="info-modal">
+        <div class="info-modal-content">
+            <div class="info-modal-header">
+                <h2>Tambahkan Informasi</h2>
+                <button class="info-modal-close" onclick="closeInfoModal()">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label for="player-name-field">Nama Pemain:</label>
+                <input type="text" id="player-name-field" class="btn-gold" placeholder="Masukkan nama Anda..." style="background: white; color: var(--dark-outline); border: clamp(1px, 0.3vw, 3px) solid var(--border-blue); box-shadow: none; padding: clamp(8px, 2vw, 16px); text-align: left;">
+            </div>
+
+            <div class="form-group">
+                <label for="school-name-field">Nama Sekolah:</label>
+                <input type="text" id="school-name-field" class="btn-gold" placeholder="Masukkan nama sekolah..." style="background: white; color: var(--dark-outline); border: clamp(1px, 0.3vw, 3px) solid var(--border-blue); box-shadow: none; padding: clamp(8px, 2vw, 16px); text-align: left;">
+            </div>
+
+            <div class="form-group">
+                <label for="photo-input">Upload Foto:</label>
+                <div class="photo-upload-box" onclick="document.getElementById('photo-input').click()">
+                    <div style="font-size: 30px; margin-bottom: 10px;">📷</div>
+                    <p style="color: var(--dark-outline); margin: 0; font-weight: 600;">Klik untuk upload foto</p>
+                </div>
+                <input type="file" id="photo-input" accept="image/*">
+                <div class="photo-preview">
+                    <img id="photo-preview-img" src="" alt="Preview">
+                    <button type="button" onclick="clearPhoto()" style="background: var(--soft-white); color: white; border: none; padding: clamp(6px, 1.5vw, 12px) clamp(12px, 3vw, 24px); border-radius: clamp(4px, 1vw, 8px); cursor: pointer; font-weight: 600;">Hapus Foto</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="text-input">Tulisan/Keterangan:</label>
+                <textarea id="text-input" placeholder="Tulis informasi, pesan, atau keterangan Anda di sini..."></textarea>
+            </div>
+
+            <div class="info-modal-buttons">
+                <button class="btn-cancel" onclick="closeInfoModal()">Batal</button>
+                <button class="btn-submit" onclick="saveInfoAndStartGame()">Simpan & Mulai Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const charAssets = {
+            jawa: `<img src="https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/4d1f20624072c139e13a3200d17f9d7947814b12/JAWA.png" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="JAWA"/>`,
+            srikandi: `<img src="https://raw.githubusercontent.com/riyanarahman320/c2FraXQgdGF1dSwgZ2EgYWRpbCByYXNhbnlh/1ebe956e0bd17ef70dfd976a88c07dc5efe4664e/KALIMANTAN.png" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="KALIMANTAN"/>`,
+            prajurit: `<img src="https://raw.githubusercontent.com/riyanarahman320/c2FraXQgdGF1dSwgZ2EgYWRpbCByYXNhbnlh/1ebe956e0bd17ef70dfd976a88c07dc5efe4664e/LAMPUNG.png" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="LAMPUNG"/>`,
+            penjaga: `<img src="https://raw.githubusercontent.com/riyanarahman320/c2FraXQgdGF1dSwgZ2EgYWRpbCByYXNhbnlh/1ebe956e0bd17ef70dfd976a88c07dc5efe4664e/PAPUA.png" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="PAPUA"/>`,
+            penyihir: `<img src="https://raw.githubusercontent.com/riyanarahman320/c2FraXQgdGF1dSwgZ2EgYWRpbCByYXNhbnlh/1ebe956e0bd17ef70dfd976a88c07dc5efe4664e/SUMBAR.png" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="SUMBAR"/>`
+        };
+
+        const cityData = [
+            { name: "Mulai", side: "corner", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Jawa Barat", side: "side-top", music: "https://raw.githubusercontent.com/riyanarahman320/c2FraXQgdGF1dSwgZ2EgYWRpbCByYXNhbnlh/b7a423f967be69ca19239d650b05b841ddcb5158/Manuk%20Dadali%20(Angklung%20version%20cover)%20Arr%20(mp3cut.net).mp3", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Nusa Tenggara Timur", side: "side-top", music: "https://raw.githubusercontent.com/riyanarahman320/c2FraXQgdGF1dSwgZ2EgYWRpbCByYXNhbnlh/b7a423f967be69ca19239d650b05b841ddcb5158/GAMELAN.mp3", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Aceh", side: "side-top", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Sulawesi Utara", side: "corner", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Maluku", side: "side-right", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Kepulauan Riau", side: "side-right", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Sumatera Utara", side: "side-right", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Kalimantan Barat", side: "corner", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Sulawesi Selatan / Toraja", side: "side-bottom", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Lampung", side: "side-bottom", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Jawa Timur", side: "side-bottom", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Jambi", side: "corner", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Sumatera Barat", side: "side-left", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Sumatera Selatan", side: "side-left", music: "", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+            { name: "Bali", side: "side-left", image: "https://raw.githubusercontent.com/lesmanaalit85-oss/resonance-odyssey/97f64b824060ad5de91364c00c041a9c748660bd/contoh%20(4).png" },
+        ];
+
+        const cityQuestions = {
+            1: { q: "Musik orkestra Betawi yang dipengaruhi budaya Eropa dan menggunakan alat musik tiup logam disebut?", a: ["Tanjidor", "Gambang Kromong", "Keroncong", "Marawis"], correct: 0 },
+            2: { q: "Alat musik bambu asal Jawa Barat yang dimainkan dengan cara digoyangkan adalah?", a: ["Angklung", "Calung", "Suling", "Kecapi"], correct: 0 },
+            3: { q: "Genre musik khas Cirebon-Indramayu yang namanya singkatan dari 'Gitar' dan 'Suling' adalah?", a: ["Tarling", "Degung", "Sindenan", "Tayub"], correct: 0 },
+            4: { q: "Ansambel musik tradisional Jawa yang didominasi metalofon dan gong disebut?", a: ["Gamelan", "Kulintang", "Talempong", "Sasando"], correct: 0 },
+            5: { q: "Aliran musik yang menggunakan instrumen flute, biola, dan cak-cuk (ukulele) yang populer di Solo adalah?", a: ["Keroncong", "Campursari", "Dangdut", "Langgam"], correct: 0 },
+            6: { q: "Kesenian drama tradisional Jawa Timur yang diiringi musik gamelan bertempo cepat disebut?", a: ["Ludruk", "Ketoprak", "Wayang Orang", "Lenong"], correct: 0 },
+            7: { q: "Musik vokal laki-laki di Bali yang menirukan suara instrumen gamelan tanpa alat musik disebut?", a: ["Kecak", "Jegog", "Genggong", "Barong"], correct: 0 },
+            8: { q: "Alat musik tiup tradisional dari pelepah pohon enau yang ditarik talinya, khas suku Sasak Lombok?", a: ["Genggong", "Seruling", "Nafiri", "Saronen"], correct: 0 },
+            9: { q: "Musik perkusi yang mengiringi tarian komedi penuh energi asal Sulawesi Selatan disebut?", a: ["Gandrang Bulo", "Sinrilik", "Pakarena", "Kacaping"], correct: 0 },
+            10: { q: "Alat musik perkusi kayu yang dipukul dan disusun rapi, khas suku Minahasa di Manado?", a: ["Kolintang", "Gendang", "Tifa", "Rebana"], correct: 0 },
+            11: { q: "Ambon dijuluki 'City of Music'. Alat musik pukul utama yang terbuat dari kayu bulat dan kulit binatang adalah?", a: ["Tifa", "Jimbe", "Bongo", "Bedug"], correct: 0 },
+            12: { q: "Musik religi di Ternate yang menggunakan rebana untuk mengiringi puji-pujian disebut?", a: ["Hadrah", "Samrah", "Qasidah", "Zapin"], correct: 0 },
+            13: { q: "Alat musik petik khas suku Dayak yang bentuk dasarnya mirip gitar tanpa fret adalah?", a: ["Sampe", "Sasando", "Jentreng", "Kecapi"], correct: 0 },
+            14: { q: "Musik khas Kalimantan yang menggunakan alat musik pukul dari logam mirip gamelan disebut?", a: ["Kliningan", "Talempong", "Gamelan Banjar", "Karungut"], correct: 2 },
+            15: { q: "Kesenian Aceh yang memadukan vokal, tepuk tangan, dan bantal kecil sebagai perkusi disebut?", a: ["Didong", "Saman", "Seudati", "Rapa'i"], correct: 0 }
+        };
+
+        const adventureTiles = new Set(Array.from({ length: cityData.length - 1 }, (_, i) => i + 1));
+        let nextAreaAction = 'adventure';
+        const instrumentMap = {
+            1: { name: 'Angklung', icon: '🎶', image: 'https://raw.githubusercontent.com/lorrainemydth-gif/MEDIA-RO/c98900fd489d86e38153e06b1ea237685d260695/angklung%20(1).png', options: ['🎶','🥁','🎸','🎻'] },
+            2: { name: 'Gamelan', icon: '🎼', options: ['🎼','🎸','🎤','🥁'] },
+            3: { name: 'Suling', icon: '🎵', options: ['🎵','🎸','🎼','🥁'] },
+            4: { name: 'Sitar', icon: '🎸', options: ['🎸','🎵','🥁','🎼'] },
+            5: { name: 'Keroncong', icon: '🎻', options: ['🎻','🎼','🎸','🎵'] },
+            6: { name: 'Gendang', icon: '🥁', options: ['🥁','🎸','🎵','🎼'] },
+            7: { name: 'Kecak', icon: '🗣️', options: ['🗣️','🎸','🥁','🎼'] },
+            8: { name: 'Genggong', icon: '🎶', options: ['🎶','🎻','🥁','🎼'] },
+            9: { name: 'Gandrang', icon: '🥁', options: ['🥁','🎸','🎵','🎼'] },
+            10: { name: 'Kolintang', icon: '🥁', options: ['🥁','🎻','🎵','🎸'] },
+            11: { name: 'Tifa', icon: '🥁', options: ['🥁','🎤','🎼','🎸'] },
+            12: { name: 'Rebana', icon: '🥁', options: ['🥁','🎵','🎸','🎼'] },
+            13: { name: 'Sampe', icon: '🪕', options: ['🪕','🎼','🥁','🎸'] },
+            14: { name: 'Talempong', icon: '🥁', options: ['🥁','🎵','🎼','🎸'] },
+            15: { name: 'Tifa', icon: '🥁', options: ['🥁','🎼','🎸','🎵'] }
+        };
+        const adventureState = {
+            running: false,
+            playerPos: 50,
+            playerTarget: 50,
+            obstacles: [],
+            nextSpawn: 0,
+            spawned: 0,
+            maxObstacles: 5,
+            rafId: null,
+            lastTime: null,
+            spawnTimer: 0,
+            finished: false,
+            caught: false,
+            correctInstrument: null
+        };
+
+        const gridCoords = [
+            [1,1], [1,2], [1,3], [1,4], [1,5], 
+            [2,5], [3,5], [4,5], [5,5], 
+            [5,4], [5,3], [5,2], [5,1], 
+            [4,1], [3,1], [2,1]
+        ];
+
+        let state = {
+            playerName: '',
+            schoolName: '',
+            idx: 0,
+            charId: '',
+            active: false,
+            isMoving: false,
+            visited: new Set(),
+            currentQuiz: null,
+            autoMode: false,
+            autoPaused: false,
+            autoTimer: null,
+            currentAudio: null,
+            score: 0,
+            answers: [], // Array untuk track jawaban per soal: {questionId, correct, answer}
+            card3Answered: false,
+            card4Answered: false
+        };
+        
+        const TRAVEL_DURATION = 5000; // 5 seconds untuk perjalanan (agar musik bisa dimainkan)
+        const TRAVEL_SETTLE = 3000; // ms: jeda singkat saat avatar menetap di wilayah baru sebelum mini-game (3 detik)
+        const DEFAULT_PREVIEW_IMAGE = 'https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/JAKARTA.png';
+
+        let audioContext = null;
+
+        function playSound(frequency, duration, type = 'sine') {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.type = type;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.frequency.value = frequency;
+                gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                osc.start(audioContext.currentTime);
+                osc.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                console.log('Audio tidak tersedia');
+            }
+        }
+
+        // Function untuk menu awal
+        function startGameFlow() {
+            // Tampilkan form input nama dan sekolah
+            document.getElementById('screen-name').classList.add('hidden');
+            document.getElementById('screen-player-info').classList.remove('hidden');
+        }
+
+        function confirmPlayerInfo() {
+            const name = document.getElementById('input-player-name').value;
+            const school = document.getElementById('input-school-name').value;
+            if (!name) {
+                alert('Masukkan nama terlebih dahulu!');
+                return;
+            }
+            if (!school) {
+                alert('Masukkan nama sekolah terlebih dahulu!');
+                return;
+            }
+            state.playerName = name;
+            state.schoolName = school;
+            document.getElementById('screen-player-info').classList.add('hidden');
+            document.getElementById('screen-char').classList.remove('hidden');
+            initCharList();
+        }
+
+        function openInfoModal() {
+            document.getElementById('info-modal').classList.add('show');
+        }
+
+        function closeInfoModal() {
+            document.getElementById('info-modal').classList.remove('show');
+            // Reset form
+            document.getElementById('player-name-field').value = '';
+            document.getElementById('school-name-field').value = '';
+            document.getElementById('text-input').value = '';
+            clearPhoto();
+        }
+
+        function clearPhoto() {
+            document.getElementById('photo-input').value = '';
+            document.getElementById('photo-preview-img').src = '';
+            document.querySelector('.photo-preview').classList.remove('show');
+        }
+
+        function saveInfoAndStartGame() {
+            const playerName = document.getElementById('player-name-field').value || 'Petualang';
+            const schoolName = document.getElementById('school-name-field').value || 'Sekolah Nusantara';
+            const textInfo = document.getElementById('text-input').value;
+            const photoFile = document.getElementById('photo-input').files[0];
+
+            // Simpan info ke state/localStorage jika diperlukan
+            state.playerName = playerName;
+            state.schoolName = schoolName;
+            state.infoText = textInfo;
+
+            // Handle photo jika ada
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    state.userPhoto = e.target.result;
+                    proceedWithGame();
+                };
+                reader.readAsDataURL(photoFile);
+            } else {
+                proceedWithGame();
+            }
+        }
+
+        function proceedWithGame() {
+            closeInfoModal();
+            document.getElementById('screen-name').classList.add('hidden');
+            document.getElementById('screen-rules').classList.remove('hidden');
+            showCharSelect(); // Langsung ke pilih karakter
+        }
+
+        // Photo upload handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const photoInput = document.getElementById('photo-input');
+            if (photoInput) {
+                photoInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const img = document.getElementById('photo-preview-img');
+                            img.src = event.target.result;
+                            document.querySelector('.photo-preview').classList.add('show');
+                            document.querySelector('.photo-upload-box').classList.add('has-file');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+
+        function showRules() {
+            // Function ini tidak lagi digunakan karena form sudah dipindahkan ke modal
+            // Tapi tetap dipertahankan untuk compatibility
+            document.getElementById('screen-name').classList.add('hidden');
+            document.getElementById('screen-rules').classList.remove('hidden');
+        }
+
+        function showCharSelect() {
+            document.getElementById('screen-rules').classList.add('hidden');
+            document.getElementById('screen-char').classList.remove('hidden');
+            initCharList();
+        }
+
+        function initCharList() {
+            const grid = document.getElementById('selection-grid');
+            grid.innerHTML = '';
+            const characters = [
+                { id: 'jawa', name: 'JAWA' },
+                { id: 'srikandi', name: 'Srikandi' },
+                { id: 'prajurit', name: 'Prajurit' },
+                { id: 'penjaga', name: 'Penjaga' },
+                { id: 'penyihir', name: 'Penyihir' }
+            ];
+
+            characters.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'char-card';
+                card.onclick = () => showInstructions(c.id);
+                const svgWrapper = document.createElement('div');
+                svgWrapper.innerHTML = charAssets[c.id];
+                const charName = document.createElement('p');
+                charName.className = 'char-name';
+                charName.innerText = c.name;
+                card.appendChild(svgWrapper);
+                card.appendChild(charName);
+                grid.appendChild(card);
+            });
+        }
+
+        function setPlayerAvatar() {
+            const avatarHtml = charAssets[state.charId] || '';
+            const playerToken = document.getElementById('player-token');
+            if (playerToken) {
+                playerToken.innerHTML = avatarHtml || '🧍';
+                if (avatarHtml) {
+                    playerToken.classList.remove('hidden');
+                    playerToken.style.display = 'flex';
+                } else {
+                    playerToken.classList.add('hidden');
+                    playerToken.style.display = 'none';
+                }
+            }
+            const adventurePlayer = document.getElementById('adventure-player');
+            if (adventurePlayer) {
+                adventurePlayer.innerHTML = avatarHtml || '🧍';
+            }
+            const statusAvatar = document.getElementById('status-avatar');
+            if (statusAvatar) {
+                statusAvatar.innerHTML = avatarHtml || '🧍';
+            }
+        }
+
+        // Helper: hide/show board token to avoid showing it during overlays
+        function hideBoardToken() {
+            const token = document.getElementById('player-token');
+            if (token) {
+                token.classList.add('hidden');
+                token.style.display = 'none';
+            }
+        }
+
+        function showBoardToken() {
+            const token = document.getElementById('player-token');
+            if (token) {
+                token.classList.remove('hidden');
+                token.style.display = 'flex';
+            }
+        }
+
+        function updateStatusPanel() {
+            const schoolElement = document.getElementById('display-school-name');
+            const visitedElement = document.getElementById('visited-count');
+            const scoreElement = document.getElementById('score-value');
+            const panelProgress = document.getElementById('panel-progress');
+            const panelScore = document.getElementById('panel-score');
+            const panelCorrect = document.getElementById('panel-correct');
+            const panelWrong = document.getElementById('panel-wrong');
+            const totalCities = document.getElementById('total-cities');
+            const correctCount = state.answers ? state.answers.filter(a => a.correct).length : 0;
+            const wrongCount = state.answers ? state.answers.filter(a => !a.correct).length : 0;
+            const progressCities = Math.max(0, cityData.length - 1);
+            const visitedCities = Math.max(0, state.visited.size - 1);
+
+            if (schoolElement) {
+                schoolElement.innerText = state.schoolName || 'Sekolah Nusantara';
+            }
+            if (visitedElement) {
+                visitedElement.innerText = `${visitedCities} / ${progressCities} Kota`;
+            }
+            if (panelProgress) {
+                panelProgress.innerText = `${visitedCities} / ${progressCities} Kota`;
+            }
+            if (scoreElement) {
+                scoreElement.innerText = state.score;
+            }
+            if (panelScore) {
+                panelScore.innerText = state.score;
+            }
+            if (panelCorrect) {
+                panelCorrect.innerText = correctCount;
+            }
+            if (panelWrong) {
+                panelWrong.innerText = wrongCount;
+            }
+            if (totalCities) {
+                totalCities.innerText = progressCities;
+            }
+        }
+
+        function showInstructions(charId) {
+            state.charId = charId;
+            document.getElementById('screen-char').classList.add('hidden');
+            document.getElementById('screen-instructions').classList.remove('hidden');
+        }
+
+        function startGame() {
+            state.active = true;
+            state.visited.add(0);
+            
+            document.getElementById('screen-instructions').classList.add('hidden');
+            document.getElementById('top-status').classList.remove('hidden');
+            setPlayerAvatar();
+            document.getElementById('display-player-name').innerText = state.playerName;
+            updateStatusPanel();
+            
+            updateTokenPos();
+            updateControlButtons();
+        }
+
+        function initBoard() {
+            const board = document.getElementById('board');
+            const defaultImage = 'https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/JAKARTA.png';
+            
+            cityData.forEach((city, i) => {
+                    const tile = document.createElement('div');
+                    tile.className = `tile ${city.side === 'corner' ? 'corner-tile' : city.side}`;
+                    tile.id = `tile-${i}`;
+                    tile.dataset.index = i;
+                    tile.style.gridRow = gridCoords[i][0];
+                    tile.style.gridColumn = gridCoords[i][1];
+                    let inner = ``;
+
+                    // Only set images for board tiles other than the starting tile
+                    const imageUrl = i === 0 ? '' : city.image || defaultImage;
+                    if (imageUrl) {
+                        tile.style.backgroundImage = `url("${imageUrl}")`;
+                    }
+
+                    tile.innerHTML = inner;
+                    board.appendChild(tile);
+            });
+        }
+
+        function getNextTileIndex() {
+            if (!state.active || state.isMoving || state.idx >= cityData.length - 1) return null;
+            return state.idx + 1;
+        }
+
+        function updateBoardInteraction() {
+            const board = document.getElementById('board');
+            if (!board) return;
+            const nextIndex = getNextTileIndex();
+
+            board.querySelectorAll('.tile').forEach(tile => {
+                tile.classList.remove('clickable', 'active-target');
+            });
+
+            if (!nextIndex) return;
+
+            const nextTile = document.getElementById(`tile-${nextIndex}`);
+            if (nextTile) {
+                nextTile.classList.add('clickable', 'active-target');
+            }
+        }
+
+        const gameBoard = document.getElementById('board');
+        if (gameBoard) {
+            gameBoard.addEventListener('click', (event) => {
+                const tile = event.target.closest('.tile.clickable');
+                if (!tile) return;
+
+                const tileIndex = Number(tile.dataset.index);
+                const nextIndex = getNextTileIndex();
+                if (nextIndex !== null && tileIndex === nextIndex && !state.isMoving) {
+                    moveToNextTile();
+                }
+            });
+        }
+
+        function updateTokenPos() {
+            const token = document.getElementById('player-token');
+            const coord = gridCoords[state.idx];
+            
+            const centerX = (coord[1] - 0.5) * 20;
+            const centerY = (coord[0] - 0.5) * 20;
+            
+            token.style.left = `${centerX}%`;
+            token.style.top = `${centerY}%`;
+            
+            document.getElementById('current-loc').innerText = cityData[state.idx].name;
+            updateStatusPanel();
+            
+            // Update gambar di tengah board sesuai wilayah yang sedang diinjak
+            const centerImageEl = document.querySelector('.center-image');
+            const centerTitleEl = document.querySelector('.center-title');
+            if (centerImageEl) {
+                const newImage = cityData[state.idx].image || DEFAULT_PREVIEW_IMAGE;
+                centerImageEl.style.opacity = '0.5';
+                centerImageEl.style.transition = 'all 0.4s ease';
+                setTimeout(() => {
+                    centerImageEl.src = newImage;
+                    centerImageEl.style.opacity = '1';
+                }, 200);
+            }
+            // center title text intentionally left blank to hide region name
+            
+            document.querySelectorAll('.tile').forEach(t => t.style.boxShadow = '');
+            const currentTile = document.getElementById(`tile-${state.idx}`);
+            if (currentTile) {
+                currentTile.style.boxShadow = '0 0 15px #ec4899, inset 0 0 15px rgba(236, 72, 153, 0.3)';
+            }
+            updateBoardInteraction();
+        }
+
+        function handleMove(dir) {
+            if (!state.active || state.isMoving) return;
+            let move = 0;
+            const i = state.idx;
+
+            // Top row (0-3): normal horizontal movement
+            if (i >= 0 && i < 4) {
+                if (dir === 'right') move = 1;
+                if (dir === 'left') move = -1;
+            }
+            // Corner: Jogja (index 4) - top right corner
+            // Bisa gerak LEFT (ke Cirebon) atau DOWN (ke Solo)
+            else if (i === 4) {
+                if (dir === 'left') move = -1;   // Ke Cirebon (index 3)
+                if (dir === 'down') move = 1;    // Ke Solo (index 5)
+            }
+            // Right side (5-7): normal vertical movement
+            else if (i > 4 && i < 8) {
+                if (dir === 'down') move = 1;
+                if (dir === 'up') move = -1;
+            }
+            // Corner: Lombok (index 8) - right bottom corner
+            // Bisa gerak UP (ke Bali) atau LEFT (ke Makassar)
+            else if (i === 8) {
+                if (dir === 'up') move = -1;    // Ke Bali (index 7)
+                if (dir === 'left') move = 1;   // Ke Makassar (index 9)
+            }
+            // Bottom row (9-11): horizontal movement (reversed)
+            else if (i > 8 && i < 12) {
+                if (dir === 'left') move = 1;
+                if (dir === 'right') move = -1;
+            }
+            // Corner: Ternate (index 12) - bottom left corner
+            // Bisa gerak RIGHT (ke Ambon) atau UP (ke Papua)
+            else if (i === 12) {
+                if (dir === 'right') move = -1;  // Ke Ambon (index 11)
+                if (dir === 'up') move = 1;      // Ke Papua (index 13)
+            }
+            // Left side (13-15): vertical movement (reversed)
+            else if (i >= 13) {
+                if (dir === 'up') move = 1;
+                if (dir === 'down') move = -1;
+            }
+
+            if (move === 0) return;
+            state.isMoving = true;
+            state.idx = (state.idx + move + 16) % 16;
+            updateTokenPos();
+            updateControlButtons();
+
+            // Putar musik perjalanan ke kota ini
+            playTravelMusic(state.idx);
+
+            // Setelah avatar berpindah, beri jeda singkat agar terlihat menetap,
+            // lalu tampilkan mini-game (area preview)
+            setTimeout(() => {
+                if (!state.visited.has(state.idx)) {
+                    state.visited.add(state.idx);
+                    showAreaPreview();
+                } else {
+                    state.isMoving = false;
+                }
+            }, TRAVEL_SETTLE);
+        }
+
+        function moveToNextTile() {
+            if (!state.active || state.isMoving) return;
+            state.isMoving = true;
+            state.idx = (state.idx + 1) % cityData.length;
+            updateTokenPos();
+            updateControlButtons();
+            playTravelMusic(state.idx);
+
+            // Setelah avatar berpindah, beri jeda singkat agar terlihat menetap,
+            // lalu tampilkan mini-game (area preview)
+            setTimeout(() => {
+                if (!state.visited.has(state.idx)) {
+                    state.visited.add(state.idx);
+                    showAreaPreview();
+                } else {
+                    state.isMoving = false;
+                }
+            }, TRAVEL_SETTLE);
+        }
+
+        function showQuiz() {
+            // Hentikan musik perjalanan saat quiz muncul
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.currentAudio.currentTime = 0;
+            }
+            
+            state.currentQuiz = cityQuestions[state.idx];
+            
+            if (!state.currentQuiz) {
+                state.isMoving = false;
+                return;
+            }
+
+            const overlay = document.getElementById('quiz-overlay');
+            // sembunyikan token papan saat menampilkan quiz
+            hideBoardToken();
+            document.getElementById('quiz-header').innerText = `TANTANGAN MUSIK: ${cityData[state.idx].name}`;
+            document.getElementById('quiz-question').innerText = state.currentQuiz.q;
+            
+            document.getElementById('quiz-feedback-box').classList.remove('show');
+            
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
+            
+            state.currentQuiz.a.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAns(idx === state.currentQuiz.correct);
+                container.appendChild(btn);
+            });
+            
+            // pause auto-walk while quiz is shown
+            state.autoPaused = true;
+            overlay.classList.add('show');
+        }
+
+        function checkAns(correct) {
+            document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+            
+            // Record jawaban
+            const questionId = state.idx;
+            state.answers.push({
+                questionId: questionId,
+                cityName: cityData[questionId].name,
+                correct: correct,
+                timestamp: new Date().toISOString()
+            });
+            
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const message = document.getElementById('feedback-message');
+            
+            feedbackBox.classList.add('show');
+
+            if (correct) {
+                playSound(523.25, 0.1);
+                icon.innerText = "✅";
+                title.innerText = "BENAR!";
+                title.style.color = '#22c55e';
+                message.innerText = "Luar biasa! Pengetahuan musikmu sangat luas.";
+                message.style.color = '#667eea';
+            } else {
+                playSound(98, 0.2);
+                icon.innerText = "❌";
+                title.innerText = "SALAH!";
+                title.style.color = '#dc2626';
+                message.innerText = `Jawaban yang benar adalah: ${state.currentQuiz.a[state.currentQuiz.correct]}`;
+                message.style.color = '#dc2626';
+                
+                const board = document.getElementById('board');
+                board.classList.add('shake');
+                setTimeout(() => board.classList.remove('shake'), 400);
+            }
+
+            setTimeout(() => {
+                document.getElementById('quiz-overlay').classList.remove('show');
+                state.isMoving = false;
+                // kembalikan tampilan token papan saat quiz ditutup
+                showBoardToken();
+                if (state.visited.size === cityData.length) {
+                    finish(true);
+                }
+                updateTokenPos();
+                // resume auto if it was running before quiz
+                if (state.autoMode) {
+                    state.autoPaused = false;
+                    if (state.autoTimer) clearTimeout(state.autoTimer);
+                    state.autoTimer = setTimeout(autoStep, 300);
+                }
+                updateControlButtons();
+            }, 2000);
+        }
+
+        function sendGameDataToSpreadsheet(win) {
+            // Ganti URL ini dengan URL Google Forms Anda
+            const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScqZ0E6JF0yOCgyU9CdywAkMdGo-cRWtDjYaM8eJa3ZPbBjig/formResponse';
+            
+            const formData = new FormData();
+            
+            // Data dasar siswa
+            formData.append('entry.595722973', state.playerName); // Nama Siswa
+            formData.append('entry.725280792', state.schoolName); // Nama Sekolah
+            formData.append('entry.96563292', state.charId); // Karakter
+            formData.append('entry.1117235510', win ? 'Menang' : 'Kalah'); // Hasil Game
+            // Stamina removed - do not send remaining lives
+            formData.append('entry.1655330258', state.answers.filter(a => a.correct).length); // Total Benar
+            formData.append('entry.1984621075', state.answers.filter(a => !a.correct).length); // Total Salah
+            formData.append('entry.439573770', new Date().toLocaleString('id-ID')); // Waktu Selesai
+            
+            // Detail jawaban per soal (dalam format JSON untuk satu field)
+            const answersDetail = state.answers.map(answer => 
+                `${answer.cityName}: ${answer.correct ? 'Benar' : 'Salah'}`
+            ).join(' | ');
+            formData.append('entry.674416243', answersDetail); // Detail Jawaban
+            
+            fetch(formUrl, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).then(() => {
+                console.log('Data berhasil dikirim ke spreadsheet');
+            }).catch(error => {
+                console.log('Error mengirim data:', error);
+            });
+        }
+
+        function finish(win) {
+            state.active = false;
+            const overlay = document.getElementById('end-overlay');
+            
+            if (win) {
+                document.getElementById('end-title').innerText = "🏆 MAESTRO NUSANTARA";
+                document.getElementById('end-message').innerText = `Selamat, ${state.playerName}! Kamu telah menjelajahi seluruh simfoni Nusantara.`;
+                document.getElementById('end-title').style.color = '#22c55e';
+            } else {
+                document.getElementById('end-title').innerText = "💀 HARMONI TERHENTI";
+                document.getElementById('end-message').innerText = "Permainan selesai. Coba lagi untuk meningkatkan skor dan jelajahi lebih banyak wilayah!";
+                document.getElementById('end-title').style.color = '#dc2626';
+            }
+            
+            // Kirim data ke spreadsheet
+            sendGameDataToSpreadsheet(win);
+            
+            overlay.classList.add('show');
+        }
+
+        function handleRight() {
+            // toggle auto mode: if already auto, stop; otherwise start auto-walk clockwise
+            if (state.autoMode) {
+                stopAuto();
+            } else {
+                startAuto();
+            }
+        }
+
+        function playTravelMusic(cityIdx) {
+            // Stop musik yang sedang dimainkan
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.currentAudio.currentTime = 0;
+            }
+            
+            // Jika ada musik untuk kota ini, putar
+            if (cityIdx < cityData.length && cityData[cityIdx].music) {
+                state.currentAudio = new Audio(cityData[cityIdx].music);
+                state.currentAudio.volume = 0.5; // volume 50%
+                state.currentAudio.play().catch(e => console.log('Musik tidak bisa diputar:', e));
+            }
+        }
+
+        function startAuto() {
+            if (state.autoMode) return;
+            state.autoMode = true;
+            state.autoPaused = false;
+            state.autoTimer = setTimeout(autoStep, 300);
+            updateControlButtons();
+        }
+
+        function stopAuto() {
+            state.autoMode = false;
+            state.autoPaused = false;
+            if (state.autoTimer) {
+                clearTimeout(state.autoTimer);
+                state.autoTimer = null;
+            }
+            updateControlButtons();
+        }
+
+        function autoStep() {
+            if (!state.autoMode || state.autoPaused) return;
+            const lastIdx = cityData.length - 1;
+            if (state.idx === lastIdx) {
+                stopAuto();
+                return;
+            }
+
+            state.isMoving = true;
+            state.idx = (state.idx + 1) % cityData.length;
+            updateTokenPos();
+            updateControlButtons();
+
+            // Putar musik perjalanan
+            playTravelMusic(state.idx);
+
+            // Setelah avatar berpindah, beri jeda singkat agar terlihat menetap,
+            // lalu tampilkan mini-game (area preview)
+            setTimeout(() => {
+                if (!state.visited.has(state.idx)) {
+                    state.visited.add(state.idx);
+                    state.autoPaused = true;
+                    showAreaPreview();
+                } else {
+                    state.isMoving = false;
+                    if (state.autoMode && !state.autoPaused && state.idx !== lastIdx) {
+                        state.autoTimer = setTimeout(autoStep, 300);
+                    } else if (state.idx === lastIdx) {
+                        stopAuto();
+                    }
+                }
+            }, TRAVEL_SETTLE);
+        }
+
+        function showAreaPreview() {
+            state.autoPaused = true;
+            openAdventureOverlay();
+        }
+
+        function showRegionNotification() {
+            const city = cityData[state.idx];
+            const descriptions = {
+                1: "Musik tradisional Jawa Barat kaya dengan alat musik bambu yang indah.",
+                2: "Nusa Tenggara Timur memiliki warisan musik gamelan yang kaya.",
+                3: "Aceh terkenal dengan musik dan alat musik tradisional yang unik.",
+                4: "Sulawesi Utara memiliki tradisi musik yang megah dan penuh energi.",
+                5: "Maluku dikenal sebagai pusat kerajinan dan musik tradisional.",
+                6: "Kepulauan Riau memiliki musik tradisional yang dinamis.",
+                7: "Sumatera Utara kaya akan warisan musik tradisional yang beragam.",
+                8: "Kalimantan Barat memiliki musik tradisional yang unik dan menarik.",
+                9: "Sulawesi Selatan / Toraja terkenal dengan tradisi musik yang megah.",
+                10: "Lampung memiliki musik tradisional yang penuh makna budaya.",
+                11: "Jawa Timur dikenal dengan musik tradisional yang lembut dan indah.",
+                12: "Jambi memiliki warisan musik tradisional yang kaya.",
+                13: "Sumatera Barat terkenal dengan musik tradisional yang energik.",
+                14: "Sumatera Selatan memiliki musik tradisional yang penuh warna.",
+                15: "Bali terkenal dengan musik kecak dan gamelan yang ekspresif."
+            };
+
+            const regionOverlay = document.getElementById('region-notification-overlay');
+            document.getElementById('region-title').innerText = `📍 WILAYAH: ${city.name.toUpperCase()}`;
+            document.getElementById('region-image').src = city.image || DEFAULT_PREVIEW_IMAGE;
+            document.getElementById('region-name').innerText = city.name;
+            document.getElementById('region-description').innerText = descriptions[state.idx] || "Kunjungi wilayah yang penuh dengan warisan musik tradisional.";
+            
+            regionOverlay.classList.remove('hidden');
+            regionOverlay.classList.add('show');
+        }
+
+        function closeRegionNotification() {
+            const regionOverlay = document.getElementById('region-notification-overlay');
+            regionOverlay.classList.remove('show');
+            regionOverlay.classList.add('hidden');
+            openAdventureOverlay();
+        }
+
+        function closeAreaPreview() {
+            const overlay = document.getElementById('area-preview-overlay');
+            overlay.classList.remove('show');
+            overlay.classList.add('hidden');
+            openAdventureOverlay();
+        }
+
+        function openAdventureOverlay() {
+            const overlay = document.getElementById('adventure-overlay');
+            const instrument = instrumentMap[state.idx] || { name: 'Alat Musik', icon: '🎵' };
+            adventureState.correctInstrument = instrument;
+            
+            // Update info cards
+            document.getElementById('adventure-region-name').innerText = cityData[state.idx].name;
+            document.getElementById('adventure-instrument-name').innerText = `${instrument.icon} ${instrument.name}`;
+            
+            // Update instruction
+            document.getElementById('adventure-instruction').innerText = '';
+            
+            document.getElementById('adventure-start-btn').classList.remove('hidden');
+            document.getElementById('adventure-continue-btn').classList.add('hidden');
+            document.getElementById('area-preview-overlay').classList.remove('show');
+            // sembunyikan token papan saat menampilkan overlay petualangan
+            hideBoardToken();
+            overlay.classList.remove('hidden');
+            overlay.classList.add('show');
+        }
+
+        function startAdventure() {
+            const overlay = document.getElementById('adventure-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('show');
+
+            adventureState.running = true;
+            adventureState.playerPos = 50;
+            adventureState.obstacles = [];
+            adventureState.nextSpawn = 0;
+            adventureState.finished = false;
+            adventureState.caught = false;
+
+            document.getElementById('adventure-instruction').innerText = '';
+            document.getElementById('adventure-start-btn').classList.add('hidden');
+            document.getElementById('adventure-continue-btn').classList.add('hidden');
+
+            const player = document.getElementById('adventure-player');
+            player.style.left = '50%';
+            player.style.bottom = '18%';
+            setPlayerAvatar();
+            // pastikan token papan tersembunyi saat mini-game berjalan
+            hideBoardToken();
+
+            const stage = document.getElementById('adventure-stage');
+            stage.querySelectorAll('.adventure-obstacle').forEach(el => el.remove());
+
+            // Add mouse and touch controls
+            stage.addEventListener('mousemove', handleMouseMove);
+            stage.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+            // Start RAF-based loop for smooth, time-based updates
+            if (adventureState.rafId) cancelAnimationFrame(adventureState.rafId);
+            adventureState.lastTime = null;
+            adventureState.spawnTimer = 0;
+            adventureState.playerTarget = adventureState.playerPos;
+            function loop(ts) {
+                if (!adventureState.running) return;
+                if (!adventureState.lastTime) adventureState.lastTime = ts;
+                const dt = ts - adventureState.lastTime;
+                adventureState.lastTime = ts;
+                updateAdventure(dt);
+                adventureState.rafId = requestAnimationFrame(loop);
+            }
+            adventureState.rafId = requestAnimationFrame(loop);
+        }
+
+        function moveAdventurePlayer(direction) {
+            if (!adventureState.running) return;
+            const step = 10;
+            if (direction === 'left') {
+                adventureState.playerTarget = Math.max(10, adventureState.playerTarget - step);
+            } else if (direction === 'right') {
+                adventureState.playerTarget = Math.min(90, adventureState.playerTarget + step);
+            }
+            const player = document.getElementById('adventure-player');
+            // leave actual rendering to RAF loop for smooth interpolation
+        }
+
+        function handleMouseMove(e) {
+            if (!adventureState.running) return;
+            const stage = document.getElementById('adventure-stage');
+            const rect = stage.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            adventureState.playerTarget = Math.max(10, Math.min(90, percentage));
+            const player = document.getElementById('adventure-player');
+            // rendering handled in RAF loop
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!adventureState.running) return;
+            const stage = document.getElementById('adventure-stage');
+            const rect = stage.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = touch.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            adventureState.playerTarget = Math.max(10, Math.min(90, percentage));
+            // rendering handled in RAF loop
+        }
+
+        function updateAdventure(dt) {
+            if (adventureState.caught || !adventureState.running) return;
+            const stage = document.getElementById('adventure-stage');
+            const stageRect = stage.getBoundingClientRect();
+
+            // Smoothly move player toward target (percent units)
+            const maxSpeedPercentPerSec = 400; // percent of stage width per second
+            const diff = adventureState.playerTarget - adventureState.playerPos;
+            const maxDelta = maxSpeedPercentPerSec * (dt / 1000);
+            if (Math.abs(diff) <= maxDelta) {
+                adventureState.playerPos = adventureState.playerTarget;
+            } else {
+                adventureState.playerPos += Math.sign(diff) * maxDelta;
+            }
+            const player = document.getElementById('adventure-player');
+            player.style.left = `${adventureState.playerPos}%`;
+            player.style.transform = 'translateX(-50%)';
+
+            // Spawn timer (ms)
+            adventureState.spawnTimer -= dt;
+            if (adventureState.spawnTimer <= 0) {
+                spawnAdventureObstacle(stage);
+                // randomize next spawn between 600-1200ms
+                adventureState.spawnTimer = 600 + Math.random() * 600;
+            }
+
+            // Update obstacles using pixel positions for consistent behaviour
+            adventureState.obstacles.forEach(obs => {
+                if (obs.done) return;
+                // speed in px/sec (proportional to stage height)
+                const speedPx = (stageRect.height || 240) * 0.6; // falls in ~1.6s down
+                obs.yPx += speedPx * (dt / 1000);
+                obs.el.style.transform = `translateY(${obs.yPx}px)`;
+
+                // collision detection using bounding rects
+                if (!obs.hit) {
+                    const obsRect = obs.el.getBoundingClientRect();
+                    const playerRect = player.getBoundingClientRect();
+                    const intersect = !(obsRect.right < playerRect.left || obsRect.left > playerRect.right || obsRect.bottom < playerRect.top || obsRect.top > playerRect.bottom);
+                    if (intersect) {
+                        obs.hit = true;
+                        if (obs.icon === adventureState.correctInstrument.icon) {
+                            obs.el.classList.add('hit');
+                            playSound(523.25, 0.2);
+                            adventureState.caught = true;
+                            completeAdventure();
+                            return;
+                        } else {
+                            obs.el.classList.add('hit');
+                            playSound(130, 0.2);
+                            document.getElementById('adventure-instruction').innerText = '❌ Salah! Coba lagi.';
+                        }
+                    }
+                }
+
+                // remove when out of view
+                if (obs.yPx > stageRect.height + 80) {
+                    obs.done = true;
+                    obs.el.remove();
+                }
+            });
+            // clean up finished obstacles array
+            adventureState.obstacles = adventureState.obstacles.filter(o => !o.done);
+        }
+
+        function spawnAdventureObstacle(stage, forceCorrect = false) {
+            const x = Math.floor(Math.random() * 72) + 14;
+            const obstacle = document.createElement('div');
+            obstacle.className = 'adventure-obstacle';
+            // position left in percent; vertical movement handled by translateY
+            obstacle.style.left = `${x}%`;
+            obstacle.style.transform = `translateY(-140px)`;
+            const baseOptions = adventureState.correctInstrument ? (adventureState.correctInstrument.options || []) : [];
+            const options = [...new Set([adventureState.correctInstrument ? adventureState.correctInstrument.icon : '🎵', ...baseOptions])];
+            let icon;
+            if (forceCorrect) {
+                icon = adventureState.correctInstrument ? adventureState.correctInstrument.icon : options[0];
+            } else {
+                icon = options[Math.floor(Math.random() * options.length)];
+            }
+            if (adventureState.correctInstrument && icon === adventureState.correctInstrument.icon && adventureState.correctInstrument.image) {
+                obstacle.innerHTML = `<img src="${adventureState.correctInstrument.image}" alt="${adventureState.correctInstrument.name}" />`;
+            } else {
+                obstacle.innerText = icon;
+            }
+            obstacle.dataset.icon = icon;
+            stage.appendChild(obstacle);
+            const initPx = -140;
+            adventureState.obstacles.push({ el: obstacle, x, yPx: initPx, hit: false, done: false, icon });
+        }
+
+        function completeAdventure() {
+            if (adventureState.finished) return;
+            adventureState.finished = true;
+            adventureState.running = false;
+            if (adventureState.rafId) cancelAnimationFrame(adventureState.rafId);
+            // Remove event listeners
+            const stage = document.getElementById('adventure-stage');
+            stage.removeEventListener('mousemove', handleMouseMove);
+            stage.removeEventListener('touchmove', handleTouchMove);
+            document.getElementById('adventure-instruction').innerText = '✅ Berhasil! Tekan LANJUT KE SOAL untuk melanjutkan.';
+            
+            // Animasi karakter berjalan ke wilayah
+            animateCharacterToRegion();
+        }
+
+        function animateCharacterToRegion() {
+            // Hanya beri efek animasi pada avatar mini-game (`adventure-player`),
+            // agar avatar di papan tidak ikut bergerak.
+            const advPlayer = document.getElementById('adventure-player');
+            if (advPlayer) {
+                advPlayer.style.animation = 'bounce 1s ease-in-out';
+                setTimeout(() => {
+                    advPlayer.style.animation = '';
+                    advPlayer.style.transform = 'translateX(-50%)';
+                    document.getElementById('adventure-continue-btn').classList.remove('hidden');
+                }, 1000);
+            } else {
+                document.getElementById('adventure-continue-btn').classList.remove('hidden');
+            }
+        }
+
+        function proceedToQuiz() {
+            // Remove event listeners if still attached
+            const stage = document.getElementById('adventure-stage');
+            stage.removeEventListener('mousemove', handleMouseMove);
+            stage.removeEventListener('touchmove', handleTouchMove);
+            const overlay = document.getElementById('adventure-overlay');
+            overlay.classList.remove('show');
+            overlay.classList.add('hidden');
+            document.getElementById('area-preview-overlay').classList.remove('show');
+            showQuizCards();
+        }
+
+        function showQuizCards() {
+            const quiz1 = cityQuestions[state.idx];
+            const nextIdx = (state.idx % cityData.length) + 1; // Next kota, loop ke 1 jika 15
+            const quiz2 = cityQuestions[nextIdx];
+            
+            if (!quiz1 || !quiz2) {
+                // Jika tidak ada soal, langsung lanjut
+                state.isMoving = false;
+                updateTokenPos();
+                updateControlButtons();
+                return;
+            }
+
+            let desc1HTML = `Musik tradisional ${cityData[state.idx].name} memiliki ciri khas yang unik dan kaya akan sejarah budaya Indonesia.`;
+            let desc2HTML = `Tantangan musik ini akan menguji pengetahuan Anda tentang alat musik dan genre musik dari ${cityData[state.idx].name}.`;
+            let card3Title = 'Soal 1';
+            let card4Title = 'Soal 2';
+            let card3HTML = quiz1.q;
+            let card4HTML = quiz2.q;
+            let card3Options = quiz1.a;
+            let card3Correct = quiz1.correct;
+            let card4Options = quiz2.a;
+            let card4Correct = quiz2.correct;
+
+            if (state.idx === 1) {
+                document.querySelector('#card-1 .card-title').innerText = 'Angklung';
+                desc1HTML = `
+                    <img src="https://raw.githubusercontent.com/yursunrise25-coder/MEDIAAROV1/6d5c189745d78f0d32c2c021fd16b4d4d02b77b3/B.1%20ANGKLUNG%20(1).png" alt="Angklung" style="width: 100%; border-radius: 12px; margin-bottom: 12px;">
+                    <p>Angklung adalah alat musik bambu yang dimainkan dengan cara diguncang sehingga tabung-tabungnya bergetar dan menghasilkan bunyi. Getaran bambu memicu resonansi kolom udara di dalam tabung, menghasilkan frekuensi tertentu (±200–2.000 Hz) sesuai ukuran tabung. Secara fisika, angklung menunjukkan konsep gelombang bunyi, resonansi, frekuensi alami, dan superposisi gelombang. Bunyi yang dihasilkan berkisar sedang hingga keras (±70-90 dB) dan semakin kuat saat dimainkan dalam ansambel (UNESCO ICH, 2010; Kunst, 1973).</p>
+                `;
+                document.querySelector('#card-2 .card-title').innerText = 'Angklung: Proportional reasoning';
+                desc2HTML = `
+                    <img src="https://raw.githubusercontent.com/yursunrise25-coder/MEDIAAROV1/6d5c189745d78f0d32c2c021fd16b4d4d02b77b3/B.2%20ANGKLUNG.png" alt="Angklung" style="width: 100%; border-radius: 12px; margin-bottom: 12px;">
+                    <p>Dalam sebuah pertunjukan seni di sekolah, siswa A memainkan angklung A, sedangkan siswa B memainkan angklung B. Angklung merupakan alat musik dari bambu yang menghasilkan bunyi karena getaran tabung bambu dan resonansi udara di dalamnya. Dalam fisika, bunyi pada tabung angklung dapat dimodelkan seperti pipa organa tertutup (satu ujung tertutup).</p>
+                    <p>Seorang siswa menebak:</p>
+                    <blockquote>“Frekuensi nada dasar A lebih kecil daripada angklung B”</blockquote>
+                `;
+                card3Title = 'Angklung Tier 1: Proportional Reasoning, Memahami Hubungan Berbanding Terbalik';
+                card3HTML = `
+                    <img src="https://raw.githubusercontent.com/yursunrise25-coder/MEDIAAROV1/6d5c189745d78f0d32c2c021fd16b4d4d02b77b3/B.2%20ANGKLUNG.png" alt="Angklung Tier 1" style="width: 100%; border-radius: 12px; margin-bottom: 12px;">
+                    <p>Perbandingan frekuensi nada dasar angklung A dan B (fa : fb) adalah …</p>
+                `;
+                card3Options = ['A. 3:4', 'B. 4:3', 'C. 1:1', 'D. 2:1', 'E. 1:2'];
+                card3Correct = 0;
+                card4Title = 'Angklung Tier 2: Proportional Reasoning, Memahami Hubungan Berbanding Terbalik';
+                card4HTML = `
+                    <img src="https://raw.githubusercontent.com/yursunrise25-coder/MEDIAAROV1/6d5c189745d78f0d32c2c021fd16b4d4d02b77b3/B.2%20ANGKLUNG.png" alt="Angklung Tier 2" style="width: 100%; border-radius: 12px; margin-bottom: 12px;">
+                    <p>Pernyataan siswa tersebut adalah …</p>
+                `;
+                card4Options = [
+                    'A. benar, karena frekuensi nada dasar berbanding terbalik dengan panjang kolom udara',
+                    'B. benar, karena panjang tabung menentukan amplitudo bunyi',
+                    'C. salah, karena frekuensi berbanding lurus dengan panjang kolom udara',
+                    'D. salah, karena jumlah tabung menentukan frekuensi',
+                    'E. salah, karena massa bambu menentukan frekuensi'
+                ];
+                card4Correct = 0;
+            } else {
+                document.querySelector('#card-1 .card-title').innerText = 'Deskripsi Soal';
+                document.querySelector('#card-2 .card-title').innerText = 'Deskripsi Soal';
+            }
+
+            // Set card 3 and 4 titles
+            document.querySelector('#card-3 .card-title').innerText = card3Title;
+            document.querySelector('#card-4 .card-title').innerText = card4Title;
+
+            document.getElementById('desc-1').innerHTML = desc1HTML;
+            document.getElementById('desc-2').innerHTML = desc2HTML;
+
+            document.getElementById('question-card-3').innerHTML = card3HTML;
+            const options3 = document.getElementById('options-3');
+            options3.innerHTML = '';
+            card3Options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkCardAnswer(3, idx === card3Correct);
+                options3.appendChild(btn);
+            });
+
+            document.getElementById('question-card-4').innerHTML = card4HTML;
+            const options4 = document.getElementById('options-4');
+            options4.innerHTML = '';
+            card4Options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerText = opt;
+                btn.disabled = true;
+                btn.onclick = () => checkCardAnswer(4, idx === card4Correct);
+                options4.appendChild(btn);
+            });
+
+            const overlay = document.getElementById('quiz-cards-overlay');
+            overlay.classList.add('show');
+
+            // Reset state kartu
+            state.card3Answered = false;
+            state.card4Answered = false;
+        }
+
+        function checkCardAnswer(cardNum, correct) {
+            const questionId = cardNum === 3 ? state.idx : ((state.idx % cityData.length) + 1);
+            const cityName = cityData[questionId].name;
+            
+            // Record jawaban
+            state.answers.push({
+                questionId: questionId,
+                cityName: cityName,
+                correct: correct,
+                timestamp: new Date().toISOString(),
+                card: cardNum
+            });
+            
+            // Feedback visual
+            const card = document.getElementById(`card-${cardNum}`);
+            const options = document.getElementById(`options-${cardNum}`);
+            options.querySelectorAll('button').forEach(btn => btn.disabled = true);
+            
+            if (correct) {
+                card.style.borderColor = '#22c55e';
+                playSound(523.25, 0.1);
+            } else {
+                card.style.borderColor = '#dc2626';
+                playSound(98, 0.2);
+                // lives feature removed
+            }
+            
+            // Jika kartu 3 dijawab, unlock kartu 4
+            if (cardNum === 3) {
+                state.card3Answered = true;
+                document.getElementById('options-4').querySelectorAll('button').forEach(btn => btn.disabled = false);
+            } else if (cardNum === 4) {
+                state.card4Answered = true;
+                // Setelah kedua kartu dijawab, lanjut
+                setTimeout(() => {
+                    document.getElementById('quiz-cards-overlay').classList.remove('show');
+                    state.isMoving = false;
+                    // kembalikan token papan setelah kartu selesai
+                    showBoardToken();
+                    if (state.visited.size === cityData.length) {
+                        finish(true);
+                    }
+                    updateTokenPos();
+                    // resume auto if it was running before quiz
+                    if (state.autoMode) {
+                        state.autoPaused = false;
+                        if (state.autoTimer) clearTimeout(state.autoTimer);
+                        state.autoTimer = setTimeout(autoStep, 300);
+                    }
+                    updateControlButtons();
+                }, 2000);
+            }
+        }
+
+        function showAdventureInstructions() {
+            const overlay = document.getElementById('adventure-overlay');
+            overlay.classList.add('show');
+        }
+
+        function updateControlButtons() {
+            const btn = document.getElementById('btn-right');
+            if (!btn) return;
+            const i = state.idx;
+            // right is valid on top row and bottom row
+            const canRight = (i >= 0 && i <= 4) || (i >= 9 && i <= 12);
+            btn.disabled = !state.active || state.isMoving || !canRight;
+        }
+
+        window.addEventListener('keydown', (e) => {
+            const adventureOverlay = document.getElementById('adventure-overlay');
+            const adventureActive = adventureOverlay && adventureOverlay.classList.contains('show');
+            if (adventureActive) {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    moveAdventurePlayer(e.key === 'ArrowRight' ? 'right' : 'left');
+                }
+            }
+        });
+
+        initBoard();
+    </script>
+</body>
+</html>
+    </script>
+</body>
+</html>

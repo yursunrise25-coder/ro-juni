@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Resonance Odyssey - Journey of Nusantara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --wood: #FFB6D9;
+            --paper: #F0F8FF;
+            --gold: #FFCB99;
+        }
+
+        body {
+            background-color: #E6F7FF;
+            font-family: 'Georgia', serif;
+            color: #5B6D82;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Screen Overlay */
+        .screen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: clamp(12px, 3vw, 30px);
+        }
+
+        .screen-overlay.hidden {
+            display: none !important;
+        }
+
+        .content-card {
+            background: var(--paper);
+            border: clamp(5px, 1.5vw, 8px) solid var(--wood);
+            border-radius: clamp(12px, 3vw, 20px);
+            padding: clamp(15px, 4vw, 40px);
+            max-width: clamp(280px, 90vw, 600px);
+            width: clamp(280px, 90vw, 90%);
+            text-align: center;
+            box-shadow: 0 0 clamp(30px, 8vw, 50px) rgba(0,0,0,0.5);
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+            aspect-ratio: auto;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #7EC8E3 0%, #A8D8EA 100%);
+            color: #2C5F7F;
+            padding: clamp(12px, 2.5vw, 15px) clamp(20px, 5vw, 40px);
+            border-radius: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: clamp(1px, 0.5vw, 2px);
+            border: 2px solid #7EC8E3;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 clamp(3px, 1vw, 5px) 0 #5EB3D6;
+            font-size: clamp(13px, 2.5vw, 16px);
+            width: 100%;
+            margin-top: clamp(8px, 2vw, 10px);
+        }
+
+        .btn-gold:hover { 
+            transform: translateY(-2px); 
+            background: linear-gradient(135deg, #A8D8EA 0%, #C8E6F5 100%);
+        }
+
+        .btn-gold:active { 
+            transform: translateY(3px); 
+            box-shadow: 0 1px 0 #5EB3D6; 
+        }
+
+        #input-player-name {
+            width: 100%;
+            padding: clamp(10px, 2vw, 12px) clamp(12px, 3vw, 15px);
+            border: clamp(2px, 0.5vw, 4px) solid #7EC8E3;
+            border-radius: 8px;
+            font-size: clamp(14px, 3vw, 16px);
+            font-weight: bold;
+            text-align: center;
+            margin: clamp(12px, 3vw, 20px) 0;
+            font-family: Georgia, serif;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #input-player-name:focus {
+            outline: none;
+            box-shadow: 0 0 10px #FFB6D9;
+        }
+
+        h1 {
+            color: #5EB3D6;
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 900;
+            font-style: italic;
+            margin-bottom: clamp(10px, 3vw, 20px);
+        }
+
+        h2 {
+            color: #5EB3D6;
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 900;
+            margin-bottom: clamp(10px, 3vw, 20px);
+            text-align: center;
+        }
+
+        p {
+            color: #5EB3D6;
+            font-weight: bold;
+            margin: clamp(5px, 2vw, 10px) 0;
+            font-size: clamp(12px, 3vw, 16px);
+        }
+
+        ul {
+            text-align: left;
+            margin: clamp(10px, 3vw, 20px) 0;
+            list-style-type: disc;
+            padding-left: clamp(20px, 5vw, 30px);
+            font-size: clamp(12px, 3vw, 14px);
+        }
+
+        ul li {
+            color: #5EB3D6;
+            font-weight: bold;
+            margin: clamp(5px, 2vw, 10px) 0;
+        }
+
+        .status-bar {
+            background: var(--paper);
+            border-bottom: 5px solid var(--wood);
+            padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 30px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 40;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: auto;
+        }
+
+        .status-bar.hidden {
+            display: none !important;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar-badge {
+            display: flex;
+            align-items: center;
+            gap: clamp(5px, 2vw, 10px);
+            background: linear-gradient(135deg, #7EC8E3 0%, #A8D8EA 100%);
+            padding: clamp(4px, 1.5vw, 8px) clamp(6px, 2vw, 12px);
+            border-radius: 8px;
+            border: 1px solid #5EB3D6;
+        }
+
+        #status-avatar {
+            width: clamp(30px, 8vw, 40px);
+            height: clamp(30px, 8vw, 40px);
+        }
+
+        .player-info {
+            color: white;
+        }
+
+        .player-name {
+            font-weight: 900;
+            font-size: clamp(12px, 3vw, 18px);
+            display: block;
+            margin: 0;
+            color: white;
+        }
+
+        .player-title {
+            font-size: clamp(7px, 1.5vw, 9px);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .location-info {
+            margin: 0 clamp(5px, 2vw, 20px);
+        }
+
+        .location-label {
+            font-size: clamp(7px, 1.5vw, 9px);
+            font-weight: bold;
+            color: #5EB3D6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        #current-loc {
+            font-weight: bold;
+            font-size: clamp(12px, 3vw, 16px);
+            color: #2C5F7F;
+            margin: 0;
+        }
+
+        .stamina-info {
+            text-align: right;
+        }
+
+        .stamina-label {
+            font-size: clamp(7px, 1.5vw, 9px);
+            font-weight: bold;
+            color: #FFB6D9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: clamp(2px, 1vw, 4px);
+        }
+
+        #life-icons {
+            font-size: clamp(18px, 4vw, 24px);
+            letter-spacing: clamp(1px, 0.5vw, 2px);
+        }
+
+        .game-main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(8px, 2vw, 20px);
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFD5B0 50%, #FFB6D9 100%);
+            position: relative;
+        }
+
+        .monopoly-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: clamp(4px, 1vw, 6px);
+            background: #E8F4F8;
+            padding: clamp(8px, 2vw, 12px);
+            border-radius: 15px;
+            width: min(85vh, 95vw);
+            height: min(85vh, 95vw);
+            aspect-ratio: 1 / 1;
+            position: relative;
+            border: clamp(4px, 1vw, 6px) solid var(--gold);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .tile {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F8FF 100%);
+            border: clamp(2px, 0.5vw, 3px) solid #B8D4E8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            font-weight: 800;
+            position: relative;
+            padding: clamp(4px, 1vw, 6px) clamp(4px, 1vw, 6px) clamp(6px, 1.5vw, 8px) clamp(4px, 1vw, 6px);
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: clamp(9px, 1.5vw, 11px);
+            line-height: 1.05;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            min-height: clamp(50px, 10vw, 60px);
+            word-break: break-word;
+        }
+
+        .tile:hover {
+            transform: translateY(-3px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 6px 15px rgba(126, 200, 227, 0.4);
+            background: linear-gradient(135deg, #F5FCFF 0%, #F0F8FF 100%);
+        }
+
+        .tile span {
+            position: relative;
+            z-index: 10;
+            margin-top: 0;
+            display: block;
+            max-width: 95%;
+            word-wrap: break-word;
+            font-size: 10px;
+        }
+
+        .tile-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 28%;
+            width: 100%;
+            border-radius: 2px 2px 0 0;
+            border-bottom: 2px solid rgba(0,0,0,0.15);
+        }
+
+        .side-top .tile-header { background: linear-gradient(135deg, #FFCB99 0%, #FFD5B0 100%); }
+        .side-right .tile-header { background: linear-gradient(135deg, #FFCB99 0%, #FFD5B0 100%); }
+        .side-bottom .tile-header { background: linear-gradient(135deg, #FFCB99 0%, #FFD5B0 100%); }
+        .side-left .tile-header { background: linear-gradient(135deg, #FFCB99 0%, #FFD5B0 100%); }
+        .corner-tile { 
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F8FF 100%);
+            border: 3px solid #B8D4E8;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        
+        .corner-tile .tile-header {
+            background: linear-gradient(135deg, #FFCB99 0%, #FFD5B0 100%) !important;
+        }
+
+        .player-token {
+            position: absolute;
+            /* diperbesar agar jelas terlihat saat bergerak di papan */
+            width: clamp(56px, 12vw, 120px);
+            height: clamp(56px, 12vw, 120px);
+            max-width: 14%;
+            max-height: 14%;
+            z-index: 50;
+            transition: all 0.6s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            filter: drop-shadow(0 8px 6px rgba(0,0,0,0.45));
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        .player-token.hidden {
+            display: none !important;
+        }
+
+        .control-group {
+            position: fixed;
+            bottom: clamp(15px, 4vw, 40px);
+            right: clamp(15px, 4vw, 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 60;
+        }
+
+        .control-group.hidden {
+            display: none !important;
+        }
+
+        .btn-dir-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(8px, 2vw, 12px);
+            width: fit-content;
+        }
+
+        .btn-dir {
+            background: linear-gradient(135deg, #7EC8E3 0%, #A8D8EA 100%);
+            border: clamp(2px, 0.5vw, 3px) solid #5EB3D6;
+            color: white;
+            width: clamp(55px, 12vw, 65px);
+            height: clamp(55px, 12vw, 65px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 clamp(3px, 1vw, 5px) 0 #8b1a38;
+            transition: all 0.15s;
+            font-size: clamp(18px, 4vw, 22px);
+            padding: 0;
+        }
+
+        .btn-dir:hover:not(:disabled) {
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB6D9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 clamp(4px, 1.2vw, 7px) 0 #5EB3D6;
+        }
+
+        .btn-dir:active:not(:disabled) { 
+            transform: translateY(2px); 
+            box-shadow: 0 clamp(1px, 0.3vw, 2px) 0 #5EB3D6; 
+        }
+
+        .btn-dir:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #888 0%, #666 100%);
+        }
+
+        .btn-dir.active {
+            background: linear-gradient(135deg, #FFB6D9 0%, #FFD5B0 100%);
+            border-color: #FFCB99;
+            box-shadow: 0 0 15px rgba(255, 203, 153, 0.6), 0 clamp(3px, 1vw, 5px) 0 #FFCB99;
+        }
+
+        .btn-dir span { 
+            display: none;
+        }
+
+        /* Quiz Overlay */
+        #quiz-overlay {
+            display: none;
+        }
+
+        #quiz-overlay.show {
+            display: flex !important;
+        }
+
+        .quiz-header {
+            color: #5EB3D6;
+            font-weight: 900;
+            font-size: clamp(10px, 2vw, 13px);
+            text-transform: uppercase;
+            letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+        }
+
+        .quiz-question {
+            font-size: clamp(18px, 4vw, 24px);
+            color: #2C5F7F;
+            font-weight: bold;
+            font-style: italic;
+            line-height: 1.3;
+            margin-bottom: clamp(20px, 4vw, 30px);
+        }
+
+        #quiz-options {
+            display: grid;
+            gap: clamp(12px, 2.5vw, 15px);
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+        }
+
+        .quiz-opt-btn {
+            background: linear-gradient(135deg, #E6F7FF 0%, #D4EEF7 100%);
+            border: clamp(2px, 0.5vw, 3px) solid #7EC8E3;
+            padding: clamp(12px, 2.5vw, 16px) clamp(10px, 2vw, 15px);
+            border-radius: clamp(8px, 2vw, 10px);
+            text-align: left;
+            font-weight: bold;
+            font-size: clamp(13px, 2.5vw, 16px);
+            color: #2C5F7F;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-family: Georgia, serif;
+            width: 100%;
+        }
+
+        .quiz-opt-btn:hover {
+            border-color: #FFB6D9;
+            background: linear-gradient(135deg, #FFF0F7 0%, #FFDDE8 100%);
+        }
+
+        .quiz-opt-btn:active {
+            transform: translateY(2px);
+        }
+
+        .quiz-opt-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #quiz-feedback-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(240, 248, 255, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 12px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        #quiz-feedback-box.show {
+            display: flex !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #feedback-icon {
+            font-size: clamp(40px, 10vw, 60px);
+            margin-bottom: clamp(8px, 2vw, 10px);
+        }
+
+        #feedback-title {
+            font-size: clamp(20px, 5vw, 36px);
+            font-weight: 900;
+            margin-bottom: clamp(6px, 1.5vw, 10px);
+        }
+
+        #feedback-message {
+            font-weight: bold;
+            padding: 0 clamp(10px, 2vw, 20px);
+            text-align: center;
+            font-size: clamp(12px, 2.5vw, 15px);
+            line-height: 1.3;
+        }
+
+        .shake { animation: shake 0.4s; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .center-area {
+            grid-area: 2 / 2 / 5 / 5;
+            background: linear-gradient(135deg, #D4EEF7 0%, #A8D8EA 100%);
+            border: clamp(2px, 0.5vw, 4px) double #2C5F7F;
+            border-radius: 8px;
+            padding: clamp(12px, 2vw, 20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.5), 0 4px 10px rgba(0,0,0,0.2);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .center-title {
+            color: #2C5F7F;
+            font-weight: 900;
+            font-size: clamp(18px, 4.5vw, 28px);
+            font-style: italic;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .center-subtitle {
+            color: #5EB3D6;
+            opacity: 0.7;
+            font-size: clamp(8px, 1.5vw, 12px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            margin-top: clamp(6px, 1.5vw, 10px);
+        }
+
+        /* Character Grid */
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 25vw, 160px), 1fr));
+            gap: clamp(15px, 5vw, 30px);
+            margin-bottom: clamp(20px, 5vw, 40px);
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .char-card {
+            background: linear-gradient(135deg, rgba(126, 200, 227, 0.2) 0%, rgba(255, 182, 217, 0.2) 100%);
+            border: clamp(1.5px, 0.5vw, 2px) solid #7EC8E3;
+            padding: clamp(12px, 3vw, 20px);
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .char-card:hover {
+            border-color: #FFB6D9;
+            background: linear-gradient(135deg, rgba(255, 182, 217, 0.3) 0%, rgba(126, 200, 227, 0.3) 100%);
+        }
+
+        .char-svg {
+            width: clamp(70px, 15vw, 96px);
+            height: clamp(88px, 18vw, 112px);
+            margin: 0 auto 10px;
+            display: block;
+        }
+
+        .char-card svg {
+            width: clamp(70px, 15vw, 96px) !important;
+            height: clamp(88px, 18vw, 112px) !important;
+            margin: 0 auto clamp(8px, 2vw, 10px) !important;
+            display: block !important;
+        }
+
+        .char-name {
+            font-weight: 900;
+            color: #fcd34d;
+            text-transform: uppercase;
+            font-size: clamp(10px, 2.5vw, 14px);
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        /* End Screen */
+        #end-overlay {
+            display: none;
+        }
+
+        #end-overlay.show {
+            display: flex !important;
+        }
+
+        #end-title {
+            font-size: clamp(28px, 7vw, 48px);
+            font-weight: 900;
+            margin-bottom: clamp(12px, 3vw, 20px);
+        }
+
+        #end-message {
+            color: #666;
+            font-weight: 500;
+            font-size: clamp(14px, 3vw, 18px);
+            margin-bottom: clamp(15px, 3vw, 30px);
+            line-height: 1.4;
+        }
+
+        /* Mobile Responsive - Tablet (max 768px) */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: clamp(10px, 3vw, 20px);
+            }
+
+            .screen-overlay {
+                padding: clamp(15px, 3vw, 30px);
+            }
+
+            .content-card {
+                width: 95%;
+                padding: clamp(15px, 4vw, 30px);
+                border: clamp(5px, 1.5vw, 8px) solid var(--wood);
+            }
+
+            .status-bar {
+                flex-direction: row;
+                justify-content: center;
+                text-align: center;
+                padding: clamp(10px, 2.5vw, 15px);
+            }
+
+            .status-left {
+                width: 100%;
+                justify-content: center;
+                gap: clamp(10px, 2vw, 15px);
+            }
+
+            .avatar-badge {
+                gap: clamp(4px, 1.5vw, 8px);
+                padding: clamp(4px, 1vw, 6px) clamp(6px, 1.5vw, 10px);
+            }
+
+            .location-info {
+                margin: clamp(5px, 1.5vw, 10px) 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .stamina-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .control-group {
+                bottom: clamp(15px, 3vw, 25px);
+                right: clamp(15px, 3vw, 25px);
+            }
+
+            .btn-dir-container {
+                gap: clamp(6px, 1.5vw, 10px);
+            }
+
+            .btn-dir {
+                width: clamp(55px, 12vw, 65px);
+                height: clamp(55px, 12vw, 65px);
+                font-size: clamp(14px, 3.5vw, 18px);
+            }
+
+            .monopoly-board {
+                width: min(80vh, 100vw);
+                height: min(80vh, 100vw);
+                padding: clamp(6px, 1.5vw, 10px);
+                gap: clamp(3px, 0.8vw, 5px);
+            }
+
+            .tile {
+                padding: clamp(3px, 0.8vw, 5px) clamp(2px, 0.5vw, 4px) clamp(4px, 1vw, 6px) clamp(2px, 0.5vw, 4px);
+                min-height: clamp(45px, 9vw, 55px);
+                font-size: clamp(8px, 1.3vw, 10px);
+            }
+
+            .tile span {
+                font-size: clamp(8px, 1.2vw, 9px);
+                max-width: 90%;
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(auto-fit, minmax(clamp(100px, 20vw, 140px), 1fr));
+                gap: clamp(12px, 4vw, 25px);
+                margin-bottom: clamp(15px, 4vw, 30px);
+            }
+
+            .char-card {
+                padding: clamp(10px, 2.5vw, 15px);
+                border: clamp(1px, 0.4vw, 2px) solid #a78bfa;
+            }
+
+            .char-svg {
+                width: clamp(60px, 13vw, 80px);
+                height: clamp(75px, 16vw, 100px);
+            }
+
+            .quiz-header {
+                font-size: clamp(10px, 1.5vw, 12px);
+            }
+
+            .quiz-question {
+                font-size: clamp(16px, 3.5vw, 22px);
+                margin-bottom: clamp(20px, 4vw, 25px);
+            }
+
+            .quiz-opt-btn {
+                padding: clamp(10px, 2vw, 14px) clamp(10px, 1.8vw, 12px);
+                font-size: clamp(12px, 2.3vw, 15px);
+            }
+
+            #input-player-name {
+                font-size: clamp(14px, 2.8vw, 16px);
+                padding: clamp(8px, 1.8vw, 10px) clamp(10px, 2.5vw, 12px);
+            }
+        }
+
+        /* Mobile Responsive - Phone (max 480px) */
+        @media (max-width: 480px) {
+            .game-container {
+                padding: clamp(8px, 2vw, 12px);
+            }
+
+            .screen-overlay {
+                padding: clamp(10px, 2vw, 20px);
+            }
+
+            .content-card {
+                width: 100%;
+                padding: clamp(12px, 3vw, 20px);
+                border: clamp(4px, 1vw, 6px) solid var(--wood);
+                max-height: 90vh;
+            }
+
+            .status-bar {
+                padding: clamp(8px, 2vw, 10px);
+                flex-wrap: wrap;
+                gap: clamp(8px, 2vw, 10px);
+            }
+
+            .status-left {
+                width: 100%;
+                gap: clamp(8px, 2vw, 10px);
+            }
+
+            .avatar-badge {
+                flex: 1;
+                justify-content: center;
+                min-width: 150px;
+            }
+
+            .location-info, .stamina-info {
+                width: 100%;
+                margin: 0;
+            }
+
+            .location-label, .stamina-label {
+                font-size: clamp(6px, 1.2vw, 8px);
+            }
+
+            .player-name, #current-loc {
+                font-size: clamp(11px, 2.5vw, 14px);
+            }
+
+            .control-group {
+                bottom: clamp(10px, 2vw, 15px);
+                right: clamp(10px, 2vw, 15px);
+            }
+
+            .btn-dir-container {
+                gap: clamp(5px, 1.2vw, 8px);
+            }
+
+            .btn-dir {
+                width: clamp(50px, 11vw, 60px);
+                height: clamp(50px, 11vw, 60px);
+                font-size: clamp(12px, 3vw, 16px);
+                box-shadow: 0 clamp(2px, 0.5vw, 3px) 0 #c41e3a;
+            }
+
+            .monopoly-board {
+                width: min(75vh, 100vw);
+                height: min(75vh, 100vw);
+                padding: clamp(4px, 1vw, 6px);
+                gap: clamp(2px, 0.4vw, 3px);
+                border: clamp(3px, 0.8vw, 4px) solid var(--gold);
+            }
+
+            .tile {
+                padding: clamp(2px, 0.4vw, 3px) clamp(2px, 0.3vw, 3px);
+                min-height: clamp(35px, 7vw, 45px);
+                font-size: clamp(7px, 1vw, 9px);
+                border: clamp(1.5px, 0.3vw, 2px) solid #8b5a2b;
+            }
+
+            .tile span {
+                font-size: clamp(6px, 0.9vw, 8px);
+                max-width: 85%;
+                margin-top: clamp(2px, 0.5vw, 4px);
+            }
+
+            .tile-header {
+                height: 22%;
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(auto-fit, minmax(clamp(80px, 18vw, 110px), 1fr));
+                gap: clamp(10px, 3vw, 15px);
+                margin-bottom: clamp(10px, 3vw, 20px);
+            }
+
+            .char-card {
+                padding: clamp(8px, 2vw, 12px);
+                border: clamp(1px, 0.3vw, 1.5px) solid #a78bfa;
+            }
+
+            .char-svg {
+                width: clamp(50px, 11vw, 70px);
+                height: clamp(62px, 13vw, 85px);
+            }
+
+            .char-name {
+                font-size: clamp(10px, 2vw, 11px);
+            }
+
+            h1 {
+                font-size: clamp(24px, 6vw, 36px);
+                margin-bottom: clamp(10px, 2vw, 15px);
+            }
+
+            h2 {
+                font-size: clamp(18px, 5vw, 28px);
+                margin-bottom: clamp(8px, 2vw, 12px);
+            }
+
+            p, ul li {
+                font-size: clamp(11px, 2.5vw, 13px);
+            }
+
+            ul {
+                padding-left: clamp(15px, 4vw, 20px);
+                margin: clamp(8px, 2vw, 15px) 0;
+            }
+
+            .quiz-header {
+                font-size: clamp(9px, 1.3vw, 11px);
+                margin-bottom: clamp(12px, 2.5vw, 15px);
+            }
+
+            .quiz-question {
+                font-size: clamp(13px, 3vw, 18px);
+                margin-bottom: clamp(15px, 3vw, 20px);
+            }
+
+            #quiz-options {
+                gap: clamp(10px, 2vw, 12px);
+                margin-bottom: clamp(12px, 2.5vw, 15px);
+            }
+
+            .quiz-opt-btn {
+                padding: clamp(10px, 1.8vw, 12px) clamp(8px, 1.5vw, 10px);
+                font-size: clamp(11px, 2vw, 14px);
+                border: clamp(1.5px, 0.3vw, 2px) solid #667eea;
+            }
+
+            .center-title {
+                font-size: clamp(16px, 3.5vw, 20px);
+            }
+
+            .center-subtitle {
+                font-size: clamp(8px, 1.2vw, 9px);
+            }
+
+            #input-player-name {
+                font-size: clamp(13px, 2.5vw, 15px);
+                padding: clamp(8px, 1.5vw, 10px) clamp(8px, 2vw, 10px);
+                margin: clamp(10px, 2vw, 15px) 0;
+            }
+
+            .btn-gold {
+                padding: clamp(10px, 2vw, 12px) clamp(15px, 3vw, 20px);
+                font-size: clamp(12px, 2.3vw, 14px);
+                letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            }
+
+            #end-title {
+                font-size: clamp(32px, 7vw, 42px);
+                margin-bottom: clamp(12px, 2.5vw, 15px);
+            }
+
+            #end-message {
+                font-size: clamp(12px, 2.5vw, 16px);
+                margin-bottom: clamp(15px, 3vw, 25px);
+            }
+
+            #life-icons {
+                font-size: clamp(16px, 3.5vw, 20px);
+                letter-spacing: clamp(0.5px, 0.3vw, 1px);
+            }
+
+            #feedback-icon {
+                font-size: clamp(40px, 10vw, 55px);
+                margin-bottom: clamp(8px, 1.5vw, 10px);
+            }
+
+            #feedback-title {
+                font-size: clamp(24px, 5vw, 32px);
+                margin-bottom: clamp(6px, 1vw, 8px);
+            }
+
+            #feedback-message {
+                font-size: clamp(11px, 2.3vw, 13px);
+                padding: 0 clamp(10px, 2vw, 15px);
+            }
+        }
+
+        /* Extra Small Devices (max 360px) */
+        @media (max-width: 360px) {
+            .monopoly-board {
+                width: min(70vh, 100vw);
+                height: min(70vh, 100vw);
+            }
+
+            .tile {
+                min-height: clamp(30px, 6vw, 40px);
+                font-size: clamp(6px, 0.8vw, 8px);
+            }
+
+            .char-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .control-group {
+                bottom: clamp(8px, 1.5vw, 12px);
+                right: clamp(8px, 1.5vw, 12px);
+            }
+
+            .btn-dir-container {
+                gap: clamp(4px, 1vw, 6px);
+            }
+
+            .btn-dir {
+                width: clamp(48px, 10vw, 55px);
+                height: clamp(48px, 10vw, 55px);
+                font-size: clamp(11px, 2.8vw, 15px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN 1: Input Nama -->
+    <div id="screen-name" class="screen-overlay">
+        <div class="content-card">
+            <h1>RESONANCE ODYSSEY</h1>
+            <p>Selamat Datang, Penjelajah!</p>
+            <input type="text" id="input-player-name" placeholder="Ketik namamu di sini...">
+            <button class="btn-gold" onclick="showRules()">START GAME</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: Aturan -->
+    <div id="screen-rules" class="screen-overlay hidden">
+        <div class="content-card">
+            <h2>ATURAN PERMAINAN</h2>
+            <ul>
+                <li>Gunakan tombol arah untuk berjalan mengelilingi Nusantara.</li>
+                <li>Setiap wilayah baru akan memberikan tantangan musik daerah tersebut.</li>
+                <li>Jawaban benar menjaga staminamu, jawaban salah akan menguranginya.</li>
+                <li>Tujuanmu adalah mengunjungi seluruh wilayah sebelum stamina habis.</li>
+                <li>Karakter akan berjalan santai mengikuti arahanmu.</li>
+            </ul>
+            <button class="btn-gold" onclick="showCharSelect()">NEXT (Pilih Karakter)</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: Pilih Karakter -->
+    <div id="screen-char" class="screen-overlay hidden">
+        <div style="text-align: center; width: 100%; max-width: clamp(500px, 95vw, 1000px);">
+            <h1 style="color: #fcd34d;">PILIH AVATARMU</h1>
+            <div class="char-grid" id="selection-grid"></div>
+        </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <header id="top-status" class="status-bar hidden">
+        <div class="status-left">
+            <div class="avatar-badge">
+                <div id="status-avatar"></div>
+                <div class="player-info">
+                    <span class="player-name" id="display-player-name"></span>
+                    <span class="player-title">Pecinta Musik Nusantara</span>
+                </div>
+            </div>
+            <div class="location-info">
+                <div class="location-label">Lokasi</div>
+                <div id="current-loc">-</div>
+            </div>
+        </div>
+        <div class="stamina-info">
+            <div class="stamina-label">Stamina</div>
+            <div id="life-icons">❤️❤️❤️❤️❤️</div>
+        </div>
+    </header>
+
+    <!-- GAME BOARD -->
+    <main class="game-main">
+        <div id="board" class="monopoly-board">
+            <div class="center-area">
+                <h2 class="center-title">RESONANCE<br>ODYSSEY</h2>
+                <div class="center-subtitle">Ekspedisi Musik Nusantara</div>
+            </div>
+            <div id="player-token" class="player-token hidden"></div>
+        </div>
+
+        <!-- Control Button (Tombol kanan saja) -->
+        <div id="move-btn-ctrl" class="control-group hidden">
+            <div class="btn-dir-container">
+                <button class="btn-dir" id="btn-right" onclick="handleRight()">▶</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- QUIZ OVERLAY -->
+    <div id="quiz-overlay" class="screen-overlay">
+        <div class="content-card">
+            <div class="quiz-header" id="quiz-header"></div>
+            <div class="quiz-question" id="quiz-question"></div>
+            <div id="quiz-options"></div>
+            
+            <div id="quiz-feedback-box">
+                <div id="feedback-icon"></div>
+                <div id="feedback-title"></div>
+                <div id="feedback-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END GAME OVERLAY -->
+    <div id="end-overlay" class="screen-overlay">
+        <div class="content-card">
+            <div id="end-title"></div>
+            <div id="end-message"></div>
+            <button class="btn-gold" onclick="location.reload()">MAIN LAGI 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        const charAssets = {
+            jawa: `<img src="https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/4d1f20624072c139e13a3200d17f9d7947814b12/JAWA.png" style="width: 100%; height: auto; max-width: 120px; display: block; margin: 0 auto;" alt="JAWA"/>`,
+            srikandi: `<svg viewBox="0 0 100 120"><rect x="30" y="80" width="40" height="40" fill="#2E7D32"/><circle cx="50" cy="45" r="25" fill="#FFDBAC"/><path d="M25 35 Q50 5 75 35 V50 H25 Z" fill="#000"/><path d="M75 40 L90 70 M90 40 L75 70" stroke="#FFD700" stroke-width="3"/><rect x="40" y="70" width="20" height="15" fill="#FFDBAC"/><circle cx="42" cy="42" r="3" fill="#000"/><circle cx="58" cy="42" r="3" fill="#000"/><path d="M45 55 Q50 60 55 55" stroke="#000" fill="none" stroke-width="2"/></svg>`,
+            prajurit: `<svg viewBox="0 0 100 120"><rect x="30" y="80" width="40" height="40" fill="#B71C1C"/><circle cx="50" cy="45" r="25" fill="#FFDBAC"/><path d="M30 25 L50 10 L70 25 V45 H30 Z" fill="#455A64"/><rect x="15" y="60" width="10" height="50" fill="#795548"/><rect x="40" y="70" width="20" height="15" fill="#FFDBAC"/><circle cx="42" cy="42" r="3" fill="#000"/><circle cx="58" cy="42" r="3" fill="#000"/><path d="M45 55 Q50 60 55 55" stroke="#000" fill="none" stroke-width="2"/></svg>`,
+            penjaga: `<svg viewBox="0 0 100 120"><rect x="30" y="80" width="40" height="40" fill="#0D47A1"/><circle cx="50" cy="45" r="25" fill="#FFDBAC"/><path d="M25 25 L75 25 L75 50 L50 65 L25 50 Z" fill="#90A4AE" opacity="0.8"/><rect x="40" y="70" width="20" height="15" fill="#FFDBAC"/><circle cx="42" cy="42" r="3" fill="#000"/><circle cx="58" cy="42" r="3" fill="#000"/><path d="M45 55 Q50 60 55 55" stroke="#000" fill="none" stroke-width="2"/></svg>`,
+            penyihir: `<svg viewBox="0 0 100 120"><rect x="30" y="80" width="40" height="40" fill="#4A148C"/><circle cx="50" cy="45" r="25" fill="#FFDBAC"/><path d="M10 50 L50 0 L90 50 Z" fill="#311B92"/><rect x="40" y="70" width="20" height="15" fill="#FFDBAC"/><circle cx="42" cy="42" r="3" fill="#000"/><circle cx="58" cy="42" r="3" fill="#000"/><path d="M45 55 Q50 60 55 55" stroke="#000" fill="none" stroke-width="2"/></svg>`
+        };
+
+        const cityData = [
+            { name: "Mulai", side: "corner", music: "" },
+            { name: "Jakarta", side: "side-top", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/JAKARTA.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Bandung", side: "side-top", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/BANDUNG.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Cirebon", side: "side-top", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/CIREBON.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Jogja", side: "corner", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/JOGJA.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Solo", side: "side-right", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/SOLO.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Surabaya", side: "side-right", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/SURABAYA.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Bali", side: "side-right", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/BALI.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Lombok", side: "corner", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/LOMBOK.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Makassar", side: "side-bottom", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/MAKASSAR.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Manado", side: "side-bottom", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/MANADO.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Ambon", side: "side-bottom", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/AMBON.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Ternate", side: "corner", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/TERNATE.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Papua", side: "side-left", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/PAPUA.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Kalimantan", side: "side-left", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/KALIMANTAN.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" },
+            { name: "Aceh", side: "side-left", image: "https://raw.githubusercontent.com/AYAA-lab/resonance-odyssey/0e31389538a02c42684025cbc04d8fb04add8b76/ACEH.png", music: "https://raw.githubusercontent.com/AYAA-lab/Game-Resonance-Odyssey/main/freesound_community-seruling-sunda-34162.mp3" }
+        ];
+
+        const cityQuestions = {
+            1: { q: "Musik orkestra Betawi yang dipengaruhi budaya Eropa dan menggunakan alat musik tiup logam disebut?", a: ["Tanjidor", "Gambang Kromong", "Keroncong", "Marawis"], correct: 0 },
+            2: { q: "Alat musik bambu asal Jawa Barat yang dimainkan dengan cara digoyangkan adalah?", a: ["Angklung", "Calung", "Suling", "Kecapi"], correct: 0 },
+            3: { q: "Genre musik khas Cirebon-Indramayu yang namanya singkatan dari 'Gitar' dan 'Suling' adalah?", a: ["Tarling", "Degung", "Sindenan", "Tayub"], correct: 0 },
+            4: { q: "Ansambel musik tradisional Jawa yang didominasi metalofon dan gong disebut?", a: ["Gamelan", "Kulintang", "Talempong", "Sasando"], correct: 0 },
+            5: { q: "Aliran musik yang menggunakan instrumen flute, biola, dan cak-cuk (ukulele) yang populer di Solo adalah?", a: ["Keroncong", "Campursari", "Dangdut", "Langgam"], correct: 0 },
+            6: { q: "Kesenian drama tradisional Jawa Timur yang diiringi musik gamelan bertempo cepat disebut?", a: ["Ludruk", "Ketoprak", "Wayang Orang", "Lenong"], correct: 0 },
+            7: { q: "Musik vokal laki-laki di Bali yang menirukan suara instrumen gamelan tanpa alat musik disebut?", a: ["Kecak", "Jegog", "Genggong", "Barong"], correct: 0 },
+            8: { q: "Alat musik tiup tradisional dari pelepah pohon enau yang ditarik talinya, khas suku Sasak Lombok?", a: ["Genggong", "Seruling", "Nafiri", "Saronen"], correct: 0 },
+            9: { q: "Musik perkusi yang mengiringi tarian komedi penuh energi asal Sulawesi Selatan disebut?", a: ["Gandrang Bulo", "Sinrilik", "Pakarena", "Kacaping"], correct: 0 },
+            10: { q: "Alat musik perkusi kayu yang dipukul dan disusun rapi, khas suku Minahasa di Manado?", a: ["Kolintang", "Gendang", "Tifa", "Rebana"], correct: 0 },
+            11: { q: "Ambon dijuluki 'City of Music'. Alat musik pukul utama yang terbuat dari kayu bulat dan kulit binatang adalah?", a: ["Tifa", "Jimbe", "Bongo", "Bedug"], correct: 0 },
+            12: { q: "Musik religi di Ternate yang menggunakan rebana untuk mengiringi puji-pujian disebut?", a: ["Hadrah", "Samrah", "Qasidah", "Zapin"], correct: 0 },
+            13: { q: "Alat musik petik khas suku Dayak yang bentuk dasarnya mirip gitar tanpa fret adalah?", a: ["Sampe", "Sasando", "Jentreng", "Kecapi"], correct: 0 },
+            14: { q: "Musik khas Kalimantan yang menggunakan alat musik pukul dari logam mirip gamelan disebut?", a: ["Kliningan", "Talempong", "Gamelan Banjar", "Karungut"], correct: 2 },
+            15: { q: "Kesenian Aceh yang memadukan vokal, tepuk tangan, dan bantal kecil sebagai perkusi disebut?", a: ["Didong", "Saman", "Seudati", "Rapa'i"], correct: 0 }
+        };
+
+        const gridCoords = [
+            [1,1], [1,2], [1,3], [1,4], [1,5], 
+            [2,5], [3,5], [4,5], [5,5], 
+            [5,4], [5,3], [5,2], [5,1], 
+            [4,1], [3,1], [2,1]
+        ];
+
+        let state = {
+            playerName: '',
+            idx: 0,
+            lives: 5,
+            charId: '',
+            active: false,
+            isMoving: false,
+            visited: new Set(),
+            currentQuiz: null,
+            autoMode: false,
+            autoPaused: false,
+            autoTimer: null,
+            currentAudio: null
+        };
+        
+        const TRAVEL_DURATION = 5000; // 5 seconds untuk perjalanan (agar musik bisa dimainkan)
+
+        let audioContext = null;
+
+        function playSound(frequency, duration, type = 'sine') {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.type = type;
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.frequency.value = frequency;
+                gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                osc.start(audioContext.currentTime);
+                osc.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                console.log('Audio tidak tersedia');
+            }
+        }
+
+        function showRules() {
+            const name = document.getElementById('input-player-name').value;
+            if (!name) {
+                alert('Masukkan nama terlebih dahulu!');
+                return;
+            }
+            state.playerName = name;
+            document.getElementById('screen-name').classList.add('hidden');
+            document.getElementById('screen-rules').classList.remove('hidden');
+        }
+
+        function showCharSelect() {
+            document.getElementById('screen-rules').classList.add('hidden');
+            document.getElementById('screen-char').classList.remove('hidden');
+            initCharList();
+        }
+
+        function initCharList() {
+            const grid = document.getElementById('selection-grid');
+            grid.innerHTML = '';
+            const characters = [
+                { id: 'jawa', name: 'JAWA' },
+                { id: 'srikandi', name: 'Srikandi' },
+                { id: 'prajurit', name: 'Prajurit' },
+                { id: 'penjaga', name: 'Penjaga' },
+                { id: 'penyihir', name: 'Penyihir' }
+            ];
+
+            characters.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'char-card';
+                card.onclick = () => finalStart(c.id);
+                const svgWrapper = document.createElement('div');
+                svgWrapper.innerHTML = charAssets[c.id];
+                const charName = document.createElement('p');
+                charName.className = 'char-name';
+                charName.innerText = c.name;
+                card.appendChild(svgWrapper);
+                card.appendChild(charName);
+                grid.appendChild(card);
+            });
+        }
+
+        function finalStart(charId) {
+            state.charId = charId;
+            state.active = true;
+            state.visited.add(0);
+            
+            document.getElementById('screen-char').classList.add('hidden');
+            document.getElementById('top-status').classList.remove('hidden');
+            document.getElementById('move-btn-ctrl').classList.remove('hidden');
+            
+            const playerToken = document.getElementById('player-token');
+            playerToken.innerHTML = charAssets[charId];
+            playerToken.classList.remove('hidden');
+            
+            document.getElementById('display-player-name').innerText = state.playerName;
+            document.getElementById('status-avatar').innerHTML = charAssets[charId];
+            
+            updateTokenPos();
+            updateControlButtons();
+        }
+
+        function initBoard() {
+            const board = document.getElementById('board');
+            cityData.forEach((city, i) => {
+                if (i === 0) return;
+                
+                    const tile = document.createElement('div');
+                    tile.className = `tile ${city.side === 'corner' ? 'corner-tile' : city.side}`;
+                    tile.id = `tile-${i}`;
+                    tile.style.gridRow = gridCoords[i][0];
+                    tile.style.gridColumn = gridCoords[i][1];
+                    let inner = `<div class="tile-header"></div><span style="z-index: 10;">${city.name}</span>`;
+
+                    // If city provides an image property, use it as background and fit it inside the tile
+                    if (city.image) {
+                        tile.style.backgroundImage = `url(${city.image})`;
+                        tile.style.backgroundRepeat = 'no-repeat';
+                        tile.style.backgroundSize = 'cover';
+                        tile.style.backgroundPosition = 'center';
+
+                        // Slightly dim the image to keep the city name readable
+                        tile.style.position = 'relative';
+                    }
+
+                    tile.innerHTML = inner;
+                    board.appendChild(tile);
+            });
+        }
+
+        function updateTokenPos() {
+            const token = document.getElementById('player-token');
+            const coord = gridCoords[state.idx];
+            
+            const centerX = (coord[1] - 0.5) * 20;
+            const centerY = (coord[0] - 0.5) * 20;
+            
+            token.style.left = `${centerX}%`;
+            token.style.top = `${centerY}%`;
+            
+            document.getElementById('life-icons').innerText = "❤️".repeat(Math.max(0, state.lives));
+            document.getElementById('current-loc').innerText = cityData[state.idx].name;
+            
+            document.querySelectorAll('.tile').forEach(t => t.style.boxShadow = '');
+            const currentTile = document.getElementById(`tile-${state.idx}`);
+            if (currentTile) {
+                currentTile.style.boxShadow = '0 0 15px #ec4899, inset 0 0 15px rgba(236, 72, 153, 0.3)';
+            }
+        }
+
+        function handleMove(dir) {
+            if (!state.active || state.isMoving) return;
+            let move = 0;
+            const i = state.idx;
+
+            // Top row (0-4): bergerak horizontal
+            if (i >= 0 && i <= 4) {
+                if (dir === 'right') move = 1;
+                if (dir === 'left') move = -1;
+            } 
+            // Right side (5-8): bergerak vertikal ke bawah
+            else if (i >= 5 && i <= 8) {
+                if (dir === 'down') move = 1;
+                if (dir === 'up') move = -1;
+            } 
+            // Bottom row (9-12): bergerak horizontal ke kiri
+            else if (i >= 9 && i <= 12) {
+                if (dir === 'left') move = 1;
+                if (dir === 'right') move = -1;
+            } 
+            // Left side (13-15): bergerak vertikal ke atas
+            else if (i >= 13 && i <= 15) {
+                if (dir === 'up') move = 1;
+                if (dir === 'down') move = -1;
+            }
+
+            if (move === 0) return;
+            state.isMoving = true;
+            state.idx = (state.idx + move + 16) % 16;
+            updateTokenPos();
+            updateControlButtons();
+
+            // Putar musik perjalanan ke kota ini
+            playTravelMusic(state.idx);
+            
+            setTimeout(() => {
+                if (!state.visited.has(state.idx)) {
+                    state.visited.add(state.idx);
+                    showQuiz();
+                } else {
+                    state.isMoving = false;
+                }
+            }, TRAVEL_DURATION);
+        }
+        
+        function handleRight() {
+            // toggle auto mode: if already auto, stop; otherwise start auto-walk clockwise
+            if (state.autoMode) {
+                stopAuto();
+            } else {
+                startAuto();
+            }
+        }
+
+        function startAuto() {
+            if (state.autoMode) return;
+            state.autoMode = true;
+            state.autoPaused = false;
+            // start first step
+            state.autoTimer = setTimeout(autoStep, 300);
+            updateControlButtons();
+        }
+
+        function stopAuto() {
+            state.autoMode = false;
+            state.autoPaused = false;
+            if (state.autoTimer) {
+                clearTimeout(state.autoTimer);
+                state.autoTimer = null;
+            }
+            updateControlButtons();
+        }
+
+        function autoStep() {
+            if (!state.autoMode || state.autoPaused) return;
+            // stop when reached final tile (Aceh index 15)
+            const lastIdx = cityData.length - 1;
+            if (state.idx === lastIdx) {
+                stopAuto();
+                return;
+            }
+
+            // move clockwise by one
+            state.isMoving = true;
+            state.idx = (state.idx + 1) % cityData.length;
+            updateTokenPos();
+            updateControlButtons();
+
+            // Putar musik perjalanan
+            playTravelMusic(state.idx);
+            
+            state.autoTimer = setTimeout(() => {
+                if (!state.visited.has(state.idx)) {
+                    state.visited.add(state.idx);
+                    // pause auto when showing quiz
+                    state.autoPaused = true;
+                    showQuiz();
+                } else {
+                    state.isMoving = false;
+                    // schedule next step if still autoMode
+                    if (state.autoMode && !state.autoPaused && state.idx !== lastIdx) {
+                        state.autoTimer = setTimeout(autoStep, 300);
+                    } else if (state.idx === lastIdx) {
+                        stopAuto();
+                    }
+                }
+            }, TRAVEL_DURATION);
+        }
+
+        function playTravelMusic(cityIdx) {
+            // Stop musik yang sedang dimainkan
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.currentAudio.currentTime = 0;
+            }
+            
+            // Jika ada musik untuk kota ini, putar
+            if (cityIdx < cityData.length && cityData[cityIdx].music) {
+                state.currentAudio = new Audio(cityData[cityIdx].music);
+                state.currentAudio.volume = 0.5; // volume 50%
+                state.currentAudio.play().catch(e => console.log('Musik tidak bisa diputar:', e));
+            }
+        }
+
+        function updateControlButtons() {
+            const btn = document.getElementById('btn-right');
+            if (!btn) return;
+            const i = state.idx;
+            // right is valid on top row (0-4) and bottom row (9-12)
+            const canRight = (i >= 0 && i <= 4) || (i >= 9 && i <= 12);
+            btn.disabled = !state.active || state.isMoving || !canRight;
+        }
+
+        function showQuiz() {
+            // Hentikan musik perjalanan saat quiz muncul
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.currentAudio.currentTime = 0;
+            }
+            
+            state.currentQuiz = cityQuestions[state.idx];
+            
+            if (!state.currentQuiz) {
+                state.isMoving = false;
+                return;
+            }
+
+            const overlay = document.getElementById('quiz-overlay');
+            document.getElementById('quiz-header').innerText = `TANTANGAN MUSIK: ${cityData[state.idx].name}`;
+            document.getElementById('quiz-question').innerText = state.currentQuiz.q;
+            
+            document.getElementById('quiz-feedback-box').classList.remove('show');
+            
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
+            
+            state.currentQuiz.a.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAns(idx === state.currentQuiz.correct);
+                container.appendChild(btn);
+            });
+            
+            overlay.classList.add('show');
+        }
+
+        function checkAns(correct) {
+            document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+            
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const message = document.getElementById('feedback-message');
+            
+            feedbackBox.classList.add('show');
+
+            if (correct) {
+                playSound(523.25, 0.1);
+                icon.innerText = "✅";
+                title.innerText = "BENAR!";
+                title.style.color = '#22c55e';
+                message.innerText = "Luar biasa! Pengetahuan musikmu sangat luas.";
+                message.style.color = '#667eea';
+            } else {
+                playSound(98, 0.2);
+                state.lives--;
+                icon.innerText = "❌";
+                title.innerText = "SALAH!";
+                title.style.color = '#dc2626';
+                message.innerText = `Jawaban yang benar adalah: ${state.currentQuiz.a[state.currentQuiz.correct]}`;
+                message.style.color = '#dc2626';
+                
+                const board = document.getElementById('board');
+                board.classList.add('shake');
+                setTimeout(() => board.classList.remove('shake'), 400);
+            }
+
+            setTimeout(() => {
+                document.getElementById('quiz-overlay').classList.remove('show');
+                state.isMoving = false;
+                if (state.lives <= 0) {
+                    finish(false);
+                } else if (state.visited.size === cityData.length) {
+                    finish(true);
+                }
+                updateTokenPos();
+                // resume auto if it was running before quiz
+                if (state.autoMode) {
+                    state.autoPaused = false;
+                    // schedule next step
+                    if (state.autoTimer) clearTimeout(state.autoTimer);
+                    state.autoTimer = setTimeout(autoStep, 300);
+                } else {
+                    // tidak dalam auto mode, tapi kirim untuk mulai perjalanan berikutnya
+                    // (user akan klik tombol kanan)
+                }
+                updateControlButtons();
+            }, 2000);
+        }
+
+        function finish(win) {
+            state.active = false;
+            const overlay = document.getElementById('end-overlay');
+            
+            if (win) {
+                document.getElementById('end-title').innerText = "🏆 MAESTRO NUSANTARA";
+                document.getElementById('end-message').innerText = `Selamat, ${state.playerName}! Kamu telah menjelajahi seluruh simfoni Nusantara.`;
+                document.getElementById('end-title').style.color = '#22c55e';
+            } else {
+                document.getElementById('end-title').innerText = "💀 HARMONI TERHENTI";
+                document.getElementById('end-message').innerText = "Stamina habis. Pelajari lagi kekayaan musik Nusantara dan coba lagi!";
+                document.getElementById('end-title').style.color = '#dc2626';
+            }
+            
+            overlay.classList.add('show');
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight") handleMove('right');
+        });
+
+        initBoard();
+    </script>
+</body>
+</html>
